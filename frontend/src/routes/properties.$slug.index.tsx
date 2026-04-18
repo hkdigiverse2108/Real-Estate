@@ -9,6 +9,9 @@ export const Route = createFileRoute("/properties/$slug/")({
       const property = await fetchPropertyBySlug(params.slug);
       return { property };
     } catch (error) {
+      console.error("Error loading property:", error);
+      // Only throw notFound if we are sure it's a 404, or if we want to show the 404 UI
+      // In this app, the notFoundComponent is used for property data missing
       throw notFound();
     }
   },
@@ -49,6 +52,7 @@ export const Route = createFileRoute("/properties/$slug/")({
 
 function PropertyPage() {
   const { property } = Route.useLoaderData();
+  const params = Route.useParams();
 
   return (
     <main className="bg-paper text-ink">
@@ -138,7 +142,10 @@ function PropertyPage() {
                 <div className="md:col-span-2 md:text-right">
                   <Link
                     to="/properties/$slug/apartments/$aptSlug"
-                    params={{ slug: property.slug, aptSlug: a.slug }}
+                    params={{ 
+                      slug: property.slug || params.slug, 
+                      aptSlug: a.slug 
+                    }}
                     aria-label={`Take a look at ${a.name}`}
                     className="inline-flex items-center justify-center bg-rose text-paper px-5 py-2.5 text-[10px] tracking-display uppercase hover:bg-ink transition-colors duration-300"
                   >

@@ -1,4 +1,5 @@
-export const API_BASE_URL = "";
+const isServer = typeof window === "undefined";
+export const API_BASE_URL = isServer ? (process.env.VITE_PROXY_TARGET || "http://localhost:8000") : "";
 
 export const getApiUrl = (path: string) => `${API_BASE_URL}${path.startsWith("/") ? "" : "/"}${path}`;
 
