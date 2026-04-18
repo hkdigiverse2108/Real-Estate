@@ -15,6 +15,12 @@ import g1 from "@/assets/spec-gallery-1.jpg";
 import g2 from "@/assets/spec-gallery-2.jpg";
 import g3 from "@/assets/spec-gallery-3.jpg";
 import g4 from "@/assets/spec-gallery-4.jpg";
+import g5 from "@/assets/spec-gallery-5.png";
+import g6 from "@/assets/spec-gallery-6.png";
+import g7 from "@/assets/spec-gallery-7.png";
+import g8 from "@/assets/spec-gallery-8.png";
+import g9 from "@/assets/spec-gallery-9.png";
+import g10 from "@/assets/spec-gallery-10.png";
 
 export const Route = createFileRoute("/specification")({
   head: () => ({
@@ -34,6 +40,12 @@ const GALLERY = [
   { src: g2, alt: "Georgian manor house with formal gardens" },
   { src: g3, alt: "Residents enjoying the spa lounge" },
   { src: g4, alt: "Indoor swimming pool and wellness suite" },
+  { src: g5, alt: "Luxury master bedroom interior" },
+  { src: g6, alt: "Outdoor alfresco dining area" },
+  { src: g7, alt: "High-end kitchen cabinetry and quartz detail" },
+  { src: g8, alt: "Residents social lounge and library" },
+  { src: g9, alt: "Aerial view of manor and lake" },
+  { src: g10, alt: "Pollards Court modern architecture" },
 ];
 
 const SPEC_SECTIONS = [
@@ -142,62 +154,63 @@ function Specification() {
 
       <section className="bg-paper-soft py-20 md:py-28 overflow-hidden">
         <div className="container-luxe">
-          <div className="flex items-end justify-between mb-12">
-            <div>
-              <h2 className="font-display text-3xl md:text-5xl text-ink uppercase tracking-tight">
-                Gallery
-              </h2>
-              <p className="mt-2 text-ink/65 uppercase text-[10px] tracking-widest font-bold">Curated views of the estate</p>
-            </div>
-            <div className="flex gap-3">
-              <button
-                onClick={scrollPrev}
-                disabled={!prevBtnEnabled}
-                className="h-10 w-10 flex items-center justify-center rounded-full border border-ink/10 text-ink/40 hover:text-rose hover:border-rose disabled:opacity-20 transition-all active:scale-95"
-                aria-label="Previous slide"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </button>
-              <button
-                onClick={scrollNext}
-                disabled={!nextBtnEnabled}
-                className="h-10 w-10 flex items-center justify-center rounded-full border border-ink/10 text-ink/40 hover:text-rose hover:border-rose disabled:opacity-20 transition-all active:scale-95"
-                aria-label="Next slide"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </button>
-            </div>
+          <div className="mb-12">
+            <h2 className="font-display text-3xl md:text-5xl text-ink uppercase tracking-tight text-center">
+              Gallery
+            </h2>
+            <p className="mt-4 text-ink/65 uppercase text-[10px] tracking-widest font-bold text-center">Click for full size images</p>
           </div>
 
-          <div className="embla" ref={emblaRef}>
-            <div className="flex gap-5 md:gap-6 ml-[-1.25rem] md:ml-[-1.5rem]">
-              {GALLERY.map((g, i) => (
-                <div key={i} className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_25%] min-w-0 pl-[1.25rem] md:pl-[1.5rem]">
-                  <button
-                    onClick={() => setLightbox(i)}
-                    aria-label={`Open ${g.alt}`}
-                    className="group relative w-full aspect-square overflow-hidden bg-ink/5 block"
-                  >
-                    <img
-                      src={g.src}
-                      alt={g.alt}
-                      loading="lazy"
-                      width={1024}
-                      height={1024}
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/15 transition-colors duration-500 flex items-center justify-center">
-                       <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 scale-90 group-hover:scale-100">
-                          <div className="w-12 h-12 rounded-full bg-paper/90 backdrop-blur-sm flex items-center justify-center text-ink shadow-2xl">
-                             <X className="h-5 w-5 rotate-45" />
-                          </div>
-                       </div>
-                    </div>
-                  </button>
-                </div>
-              ))}
+          <div className="relative group/carousel">
+            <div className="embla" ref={emblaRef}>
+              <div className="flex gap-5 md:gap-6 ml-[-1.25rem] md:ml-[-1.5rem]">
+                {GALLERY.map((g, i) => (
+                  <div key={i} className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_25%] min-w-0 pl-[1.25rem] md:pl-[1.5rem]">
+                    <button
+                      onClick={() => setLightbox(i)}
+                      aria-label={`Open ${g.alt}`}
+                      className="group relative w-full aspect-square overflow-hidden bg-ink/5 block"
+                    >
+                      <img
+                        src={g.src}
+                        alt={g.alt}
+                        loading="lazy"
+                        width={1024}
+                        height={1024}
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/15 transition-colors duration-500 flex items-center justify-center">
+                         <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 scale-90 group-hover:scale-100">
+                            <div className="w-12 h-12 rounded-full bg-paper/90 backdrop-blur-sm flex items-center justify-center text-ink shadow-2xl">
+                               <X className="h-5 w-5 rotate-45" />
+                            </div>
+                         </div>
+                      </div>
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
+
+            {/* Navigation Buttons Overlay */}
+            <button
+              onClick={scrollPrev}
+              disabled={!prevBtnEnabled}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 h-10 w-10 md:h-12 md:w-12 flex items-center justify-center text-white/80 hover:text-white disabled:opacity-0 transition-all active:scale-90"
+              aria-label="Previous slide"
+            >
+              <ChevronLeft className="h-10 w-10 md:h-12 md:w-12 stroke-[1.5px]" />
+            </button>
+            <button
+              onClick={scrollNext}
+              disabled={!nextBtnEnabled}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 h-10 w-10 md:h-12 md:w-12 flex items-center justify-center text-white/80 hover:text-white disabled:opacity-0 transition-all active:scale-90"
+              aria-label="Next slide"
+            >
+              <ChevronRight className="h-10 w-10 md:h-12 md:w-12 stroke-[1.5px]" />
+            </button>
           </div>
+          
           <p className="mt-8 text-center text-[10px] tracking-widest uppercase text-ink/30 font-bold">Swipe or use arrows to explore more</p>
         </div>
       </section>
