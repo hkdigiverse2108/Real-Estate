@@ -137,7 +137,8 @@ function PropertyPage() {
                 </div>
                 <div className="md:col-span-2 md:text-right">
                   <Link
-                    to="/contact"
+                    to="/properties/$slug/apartments/$aptSlug"
+                    params={{ slug: property.slug, aptSlug: a.slug }}
                     aria-label={`Take a look at ${a.name}`}
                     className="inline-flex items-center justify-center bg-rose text-paper px-5 py-2.5 text-[10px] tracking-display uppercase hover:bg-ink transition-colors duration-300"
                   >

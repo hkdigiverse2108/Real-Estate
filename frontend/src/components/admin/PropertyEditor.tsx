@@ -1,10 +1,16 @@
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Plus, Trash2, Save, X, Image as ImageIcon, Loader2, Upload } from "lucide-react";
+import { Plus, Trash2, Save, X, Image as ImageIcon, Loader2, Upload, ChevronDown, ChevronUp, MapPin, Layout } from "lucide-react";
 import { AdminCard } from "./AdminCard";
 import { useState, useRef } from "react";
 import { uploadAsset } from "@/lib/api";
+
+const dimensionSchema = z.object({
+  room: z.string().min(1, "Room name is required"),
+  metric: z.string().min(1, "Metric size is required"),
+  imperial: z.string().min(1, "Imperial size is required"),
+});
 
 const apartmentSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -12,6 +18,10 @@ const apartmentSchema = z.object({
   size: z.string().min(1, "Size is required"),
   price: z.string().min(1, "Price is required"),
   slug: z.string().min(1, "Slug is required"),
+  hero_image: z.string().optional(),
+  floorplan_image: z.string().optional(),
+  location_map_image: z.string().optional(),
+  dimensions: z.array(dimensionSchema).default([]),
 });
 
 const propertySchema = z.object({
@@ -36,10 +46,79 @@ interface PropertyEditorProps {
   onCancel: () => void;
 }
 
+function DimensionsEditor({ nestIndex, control, register }: { nestIndex: number, control: any, register: any }) {
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: `apartments.${nestIndex}.dimensions`
+  });
+
+  return (
+    <div className="mt-6 border-t border-ink/5 pt-6">
+      <div className="mb-4 flex items-center justify-between">
+        <h5 className="text-[10px] font-bold text-ink/40 uppercase tracking-widest">Room Dimensions</h5>
+        <button
+          type="button"
+          onClick={() => append({ room: "", metric: "", imperial: "" })}
+          className="flex items-center gap-1.5 text-[10px] font-bold text-rose uppercase tracking-widest hover:text-ink transition-colors"
+        >
+          <Plus className="h-3 w-3" />
+          Add Room
+        </button>
+      </div>
+
+      <div className="space-y-3">
+        {fields.map((field, index) => (
+          <div key={field.id} className="grid grid-cols-1 gap-3 rounded-lg bg-paper-soft/50 p-3 md:grid-cols-4">
+            <div className="space-y-1">
+              <span className="text-[8px] font-bold text-ink/30 uppercase tracking-tighter">Room</span>
+              <input
+                {...register(`apartments.${nestIndex}.dimensions.${index}.room`)}
+                className="w-full bg-transparent text-xs text-ink focus:outline-none"
+                placeholder="Bedroom 1"
+              />
+            </div>
+            <div className="space-y-1">
+              <span className="text-[8px] font-bold text-ink/30 uppercase tracking-tighter">Metric</span>
+              <input
+                {...register(`apartments.${nestIndex}.dimensions.${index}.metric`)}
+                className="w-full bg-transparent text-xs text-ink focus:outline-none"
+                placeholder="4.5m x 3.2m"
+              />
+            </div>
+            <div className="space-y-1">
+              <span className="text-[8px] font-bold text-ink/30 uppercase tracking-tighter">Imperial</span>
+              <input
+                {...register(`apartments.${nestIndex}.dimensions.${index}.imperial`)}
+                className="w-full bg-transparent text-xs text-ink focus:outline-none"
+                placeholder={'14\'9" x 10\'6"'}
+              />
+            </div>
+            <div className="flex items-end justify-end pb-1">
+              <button
+                type="button"
+                onClick={() => remove(index)}
+                className="text-ink/20 hover:text-rose transition-colors"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </div>
+        ))}
+        {fields.length === 0 && (
+          <p className="py-4 text-center text-[10px] italic text-ink/20 uppercase tracking-widest">No dimensions added yet</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function PropertyEditor({ initialData, onSave, onCancel }: PropertyEditorProps) {
   const [uploading, setUploading] = useState<{ [key: string]: boolean }>({});
+  const [expandedApartment, setExpandedApartment] = useState<number | null>(null);
+  
   const heroInputRef = useRef<HTMLInputElement>(null);
   const featuredInputRef = useRef<HTMLInputElement>(null);
+  const apartmentImageRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
 
   const {
     register,
@@ -70,18 +149,18 @@ export function PropertyEditor({ initialData, onSave, onCancel }: PropertyEditor
     name: "apartments",
   });
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: keyof PropertyFormValues) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, fieldPath: string) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setUploading(prev => ({ ...prev, [field]: true }));
+    setUploading(prev => ({ ...prev, [fieldPath]: true }));
     try {
       const result = await uploadAsset(file);
-      setValue(field, result.path);
+      setValue(fieldPath as any, result.path);
     } catch (err) {
       alert("Failed to upload image. Please try again.");
     } finally {
-      setUploading(prev => ({ ...prev, [field]: false }));
+      setUploading(prev => ({ ...prev, [fieldPath]: false }));
     }
   };
 
@@ -224,8 +303,25 @@ export function PropertyEditor({ initialData, onSave, onCancel }: PropertyEditor
                     <div className="h-6 w-11 rounded-full bg-ink/10 transition-colors peer-checked:bg-rose group-hover:bg-ink/20"></div>
                     <div className="absolute left-1 top-1 h-4 w-4 rounded-full bg-white transition-transform peer-checked:translate-x-5"></div>
                   </div>
-                  <span className="text-[10px] font-bold text-ink/40 uppercase tracking-widest group-hover:text-ink transition-colors">Featured listing</span>
+                  <span className="text-[10px] font-bold text-ink/40 uppercase tracking-widest group-hover:text-ink transition-colors">Featured</span>
                 </label>
+              </div>
+            </div>
+
+            <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="mb-2 block text-[10px] font-bold text-ink/40 uppercase tracking-widest">Show Apartment Note</label>
+                <input
+                  {...register("showApartmentNote")}
+                  className="w-full rounded-xl border border-ink/10 bg-paper-soft px-4 py-3 text-ink focus:border-rose focus:ring-1 focus:ring-rose/20 focus:outline-none transition-all placeholder:text-ink/20"
+                />
+              </div>
+              <div>
+                <label className="mb-2 block text-[10px] font-bold text-ink/40 uppercase tracking-widest">Sales Hours</label>
+                <input
+                  {...register("hours")}
+                  className="w-full rounded-xl border border-ink/10 bg-paper-soft px-4 py-3 text-ink focus:border-rose focus:ring-1 focus:ring-rose/20 focus:outline-none transition-all placeholder:text-ink/20"
+                />
               </div>
             </div>
 
@@ -235,7 +331,6 @@ export function PropertyEditor({ initialData, onSave, onCancel }: PropertyEditor
                 {...register("intro")}
                 rows={3}
                 className="w-full rounded-xl border border-ink/10 bg-paper-soft px-4 py-3 text-ink focus:border-rose focus:ring-1 focus:ring-rose/20 focus:outline-none transition-all placeholder:text-ink/20"
-                placeholder="Exquisite luxury later living..."
               />
               {errors.intro && <p className="mt-1 text-xs text-rose">{errors.intro.message}</p>}
             </div>
@@ -246,7 +341,10 @@ export function PropertyEditor({ initialData, onSave, onCancel }: PropertyEditor
               <h4 className="font-display text-lg text-ink">Apartments</h4>
               <button
                 type="button"
-                onClick={() => append({ name: "", type: "", size: "", price: "", slug: "" })}
+                onClick={() => {
+                  append({ name: "", type: "", size: "", price: "", slug: "", dimensions: [] });
+                  setExpandedApartment(fields.length);
+                }}
                 className="flex items-center gap-2 rounded-xl bg-ink px-4 py-2 text-xs font-semibold text-white transition-opacity hover:opacity-90 active:scale-95"
               >
                 <Plus className="h-3.5 w-3.5" />
@@ -255,66 +353,194 @@ export function PropertyEditor({ initialData, onSave, onCancel }: PropertyEditor
             </div>
 
             <div className="space-y-4">
-              {fields.map((field, index) => (
-                <div key={field.id} className="grid grid-cols-1 gap-4 rounded-xl border border-ink/5 bg-white p-4 md:grid-cols-5">
-                  <div className="space-y-1">
-                    <span className="text-[8px] font-bold text-ink/30 uppercase tracking-tighter">Name</span>
-                    <input
-                      {...register(`apartments.${index}.name`)}
-                      className="w-full bg-transparent text-sm text-ink focus:outline-none"
-                      placeholder="Apartment 1"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <span className="text-[8px] font-bold text-ink/30 uppercase tracking-tighter">Type</span>
-                    <input
-                      {...register(`apartments.${index}.type`)}
-                      className="w-full bg-transparent text-sm text-ink focus:outline-none"
-                      placeholder="Type"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <span className="text-[8px] font-bold text-ink/30 uppercase tracking-tighter">Size</span>
-                    <input
-                      {...register(`apartments.${index}.size`)}
-                      className="w-full bg-transparent text-sm text-ink focus:outline-none"
-                      placeholder="Size"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <span className="text-[8px] font-bold text-ink/30 uppercase tracking-tighter">Price</span>
-                    <input
-                      {...register(`apartments.${index}.price`)}
-                      className="w-full bg-transparent text-sm text-ink focus:outline-none"
-                      placeholder="Price"
-                    />
-                  </div>
-                  <div className="flex items-end justify-between gap-2 pb-1">
-                    <div className="flex-1 space-y-1">
-                      <span className="text-[8px] font-bold text-ink/30 uppercase tracking-tighter">Slug</span>
-                      <input
-                        {...register(`apartments.${index}.slug`)}
-                        className="w-full bg-transparent text-sm text-ink focus:outline-none"
-                        placeholder="Slug"
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => remove(index)}
-                      className="text-ink/20 hover:text-rose mb-1 transition-colors"
+              {fields.map((field, index) => {
+                const isExpanded = expandedApartment === index;
+                const aptHeroPath = `apartments.${index}.hero_image`;
+                const aptHeroUrl = watch(aptHeroPath as any);
+                const aptFloorplanPath = `apartments.${index}.floorplan_image`;
+                const aptFloorplanUrl = watch(aptFloorplanPath as any);
+                const aptMapPath = `apartments.${index}.location_map_image`;
+                const aptMapUrl = watch(aptMapPath as any);
+
+                return (
+                  <div key={field.id} className="rounded-xl border border-ink/5 bg-white transition-all overflow-hidden">
+                    <div 
+                      className="flex items-center justify-between p-4 cursor-pointer hover:bg-paper-soft/30 transition-colors"
+                      onClick={() => setExpandedApartment(isExpanded ? null : index)}
                     >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
+                      <div className="flex flex-1 items-center gap-6">
+                        <div className="space-y-1 min-w-[120px]">
+                          <span className="text-[8px] font-bold text-ink/30 uppercase tracking-tighter">Name</span>
+                          <input
+                            {...register(`apartments.${index}.name`)}
+                            onClick={(e) => e.stopPropagation()}
+                            className="w-full bg-transparent text-sm font-semibold text-ink focus:outline-none"
+                            placeholder="Unit 1"
+                          />
+                        </div>
+                        <div className="space-y-1 hidden md:block">
+                          <span className="text-[8px] font-bold text-ink/30 uppercase tracking-tighter">Type</span>
+                          <input
+                            {...register(`apartments.${index}.type`)}
+                            onClick={(e) => e.stopPropagation()}
+                            className="w-full bg-transparent text-xs text-ink/60 focus:outline-none"
+                            placeholder="1 Bedroom"
+                          />
+                        </div>
+                        <div className="space-y-1 hidden md:block">
+                          <span className="text-[8px] font-bold text-ink/30 uppercase tracking-tighter">Price</span>
+                          <input
+                            {...register(`apartments.${index}.price`)}
+                            onClick={(e) => e.stopPropagation()}
+                            className="w-full bg-transparent text-xs text-ink/60 focus:outline-none"
+                            placeholder="£XXX,XXX"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            remove(index);
+                          }}
+                          className="text-ink/20 hover:text-rose transition-colors"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                        <div className="text-ink/40">
+                          {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                        </div>
+                      </div>
+                    </div>
+
+                    {isExpanded && (
+                      <div className="border-t border-ink/5 bg-paper-soft/20 p-6 space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="space-y-4">
+                            <div className="grid grid-cols-2 gap-4">
+                              <div className="space-y-1">
+                                <span className="text-[8px] font-bold text-ink/30 uppercase tracking-tighter">Size</span>
+                                <input
+                                  {...register(`apartments.${index}.size`)}
+                                  className="w-full rounded-lg border border-ink/10 bg-white px-3 py-2 text-xs text-ink"
+                                  placeholder="750 sq ft"
+                                />
+                              </div>
+                              <div className="space-y-1">
+                                <span className="text-[8px] font-bold text-ink/30 uppercase tracking-tighter">Slug</span>
+                                <input
+                                  {...register(`apartments.${index}.slug`)}
+                                  className="w-full rounded-lg border border-ink/10 bg-white px-3 py-2 text-xs text-ink"
+                                  placeholder="no-1-cullinan"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="space-y-3">
+                              <label className="text-[10px] font-bold text-ink/40 uppercase tracking-widest">Detail Page Header</label>
+                              <div 
+                                onClick={() => apartmentImageRefs.current[aptHeroPath]?.click()}
+                                className="group relative aspect-video w-full cursor-pointer overflow-hidden rounded-xl border-2 border-dashed border-ink/10 bg-white hover:border-rose/40 transition-all"
+                              >
+                                <input 
+                                  type="file" 
+                                  ref={el => apartmentImageRefs.current[aptHeroPath] = el}
+                                  className="hidden" 
+                                  accept="image/*" 
+                                  onChange={(e) => handleFileUpload(e, aptHeroPath)} 
+                                />
+                                {aptHeroUrl ? (
+                                  <img src={aptHeroUrl} className="h-full w-full object-cover" />
+                                ) : (
+                                  <div className="flex flex-col items-center justify-center h-full text-ink/20">
+                                    <Layout className="h-5 w-5 mb-2" />
+                                    <span className="text-[8px] font-bold uppercase tracking-widest">Add Hero Image</span>
+                                  </div>
+                                )}
+                                {uploading[aptHeroPath] && (
+                                  <div className="absolute inset-0 flex items-center justify-center bg-white/80">
+                                    <Loader2 className="h-5 w-5 text-rose animate-spin" />
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <label className="text-[10px] font-bold text-ink/40 uppercase tracking-widest">Floorplan</label>
+                              <div 
+                                onClick={() => apartmentImageRefs.current[aptFloorplanPath]?.click()}
+                                className="group relative aspect-[4/5] w-full cursor-pointer overflow-hidden rounded-xl border-2 border-dashed border-ink/10 bg-white hover:border-rose/40 transition-all"
+                              >
+                                <input 
+                                  type="file" 
+                                  ref={el => apartmentImageRefs.current[aptFloorplanPath] = el}
+                                  className="hidden" 
+                                  accept="image/*" 
+                                  onChange={(e) => handleFileUpload(e, aptFloorplanPath)} 
+                                />
+                                {aptFloorplanUrl ? (
+                                  <img src={aptFloorplanUrl} className="h-full w-full object-contain p-2" />
+                                ) : (
+                                  <div className="flex flex-col items-center justify-center h-full text-ink/20">
+                                    <ImageIcon className="h-5 w-5 mb-2" />
+                                    <span className="text-[8px] font-bold uppercase tracking-widest text-center">Upload Floorplan</span>
+                                  </div>
+                                )}
+                                {uploading[aptFloorplanPath] && (
+                                  <div className="absolute inset-0 flex items-center justify-center bg-white/80">
+                                    <Loader2 className="h-5 w-5 text-rose animate-spin" />
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            <div className="space-y-2">
+                              <label className="text-[10px] font-bold text-ink/40 uppercase tracking-widest">Location Map</label>
+                              <div 
+                                onClick={() => apartmentImageRefs.current[aptMapPath]?.click()}
+                                className="group relative aspect-[4/5] w-full cursor-pointer overflow-hidden rounded-xl border-2 border-dashed border-ink/10 bg-white hover:border-rose/40 transition-all"
+                              >
+                                <input 
+                                  type="file" 
+                                  ref={el => apartmentImageRefs.current[aptMapPath] = el}
+                                  className="hidden" 
+                                  accept="image/*" 
+                                  onChange={(e) => handleFileUpload(e, aptMapPath)} 
+                                />
+                                {aptMapUrl ? (
+                                  <img src={aptMapUrl} className="h-full w-full object-contain p-2" />
+                                ) : (
+                                  <div className="flex flex-col items-center justify-center h-full text-ink/20">
+                                    <MapPin className="h-5 w-5 mb-2" />
+                                    <span className="text-[8px] font-bold uppercase tracking-widest text-center">Upload Map</span>
+                                  </div>
+                                )}
+                                {uploading[aptMapPath] && (
+                                  <div className="absolute inset-0 flex items-center justify-center bg-white/80">
+                                    <Loader2 className="h-5 w-5 text-rose animate-spin" />
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <DimensionsEditor nestIndex={index} control={control} register={register} />
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
               {fields.length === 0 && (
                 <div className="py-10 text-center text-xs text-ink/20 italic">No apartments added yet</div>
               )}
             </div>
           </div>
 
-          <div className="flex justify-end gap-4 pt-4">
+          <div className="flex justify-end gap-4 pt-4 border-t border-ink/5">
             <button
               type="button"
               onClick={onCancel}

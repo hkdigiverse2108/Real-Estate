@@ -1,12 +1,21 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
 
+class Dimension(BaseModel):
+    room: str
+    metric: str
+    imperial: str
+
 class Apartment(BaseModel):
     name: str
     type: str
     size: str
     price: str
     slug: str
+    hero_image: Optional[str] = None
+    floorplan_image: Optional[str] = None
+    location_map_image: Optional[str] = None
+    dimensions: List[Dimension] = []
 
 class PropertyModel(BaseModel):
     slug: str
