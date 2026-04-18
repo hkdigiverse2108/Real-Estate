@@ -24,17 +24,13 @@ export const About = () => (
         </h2>
         <div className="space-y-5 text-ink/75 leading-relaxed text-[17px]">
           <p>
-            The Sandars is a unique, state of the art development for luxury later living
-            on the edge of the beautiful village of Thorpe, in Surrey. It is set within the
-            Runnymede Green Belt and partially within the Thorpe Conservation Area.
+            The Sandars is a unique, state of the art development for luxury later living based on the edge of the beautiful village of Thorpe, in Surrey. It is set within the 'Runnymede Green Belt Area' and partially within the 'Thorpe Conservation Area'.
           </p>
           <p>
-            Set in parkland of over 27 acres, this exceptional development is exclusively
-            for those 55 years and over. The luxury 1 &amp; 2 bedroom apartments are for sale,
-            with selected plots also available for rental \u2014 unfurnished.
+            Set in parkland of over 27 acres this exceptional development is exclusively for 55 years and over. The luxury 1 & 2 bedroom apartments are for sale with selected plots also available for rental, unfurnished. No two are the same, creating a bespoke home as individual as you are.
           </p>
           <p>
-            No two are the same, creating a bespoke home as individual as you are.
+            The spectrum of choice takes in a timeline from the 18th, 19th, 20th & 21st centuries creating the broadest possible appeal.
           </p>
         </div>
         <a

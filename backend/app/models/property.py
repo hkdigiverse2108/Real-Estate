@@ -22,3 +22,14 @@ class PropertyResponse(PropertyModel):
 
     class Config:
         populate_by_name = True
+        json_schema_extra = {
+            "example": {
+                "slug": "luxury-villa",
+                "name": "Luxury Villa",
+                "hero": "/images/hero.jpg",
+                "intro": "A beautiful villa.",
+                "showApartmentNote": "Note",
+                "hours": "9-5",
+                "apartments": []
+            }
+        }
