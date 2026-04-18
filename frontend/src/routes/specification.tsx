@@ -166,22 +166,20 @@ function Specification() {
         </div>
       </section>
 
-      <section id="gallery" className="bg-[#F4F1ED] py-24 md:py-32 overflow-hidden selection:bg-rose/10">
-        <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20">
-          <div className="mb-14 md:mb-20 text-center">
-            <h2 className="font-display text-4xl md:text-5xl lg:text-5xl text-ink uppercase tracking-[0.18em] mb-4 font-light">
+      <section className="bg-paper-soft py-20 md:py-28 overflow-hidden">
+        <div className="container-luxe">
+          <div className="mb-14">
+            <h2 className="font-display text-4xl md:text-6xl text-ink uppercase tracking-tight text-center">
               Gallery
             </h2>
-            <p className="text-ink text-sm md:text-base font-sans font-light opacity-70">
-              Click for full size images.
-            </p>
+            <p className="mt-5 text-ink/50 uppercase text-xs tracking-[0.2em] font-medium text-center italic">Click for full size images</p>
           </div>
 
-          <div className="relative">
-            <div className="embla" ref={emblaRef}>
-              <div className="flex gap-4 md:gap-5">
-                {GALLERY.slice(0, 10).map((g, i) => (
-                  <div key={i} className="flex-[0_0_88%] sm:flex-[0_0_46%] lg:flex-[0_0_23.8%] min-w-0">
+          <div className="relative group/carousel">
+            <div className="embla overflow-hidden" ref={emblaRef}>
+              <div className="flex ml-[-1.25rem] md:ml-[-1.5rem]">
+                {GALLERY.map((g, i) => (
+                  <div key={i} className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_25%] min-w-0 pl-[1.25rem] md:pl-[1.5rem]">
                     <button
                       onClick={() => setLightbox(i)}
                       aria-label={`Open ${g.alt}`}
@@ -195,10 +193,12 @@ function Specification() {
                         height={1024}
                         className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
                       />
-                      
-                      {/* Lattice Diamond Overlay (More Premium) */}
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/5 group-hover:bg-black/30 transition-all duration-700">
-                         <DiamondIcon className="h-16 w-16 md:h-24 md:w-24 text-white opacity-40 group-hover:opacity-100 transition-all duration-700 drop-shadow-2xl scale-90 group-hover:scale-100" />
+                      <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/20 transition-all duration-700 flex items-center justify-center">
+                         <div className="opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+                            <div className="w-14 h-14 rounded-full bg-paper/95 backdrop-blur-md flex items-center justify-center text-ink shadow-soft border border-paper/20">
+                               <X className="h-6 w-6 rotate-45 stroke-[1px]" />
+                            </div>
+                         </div>
                       </div>
                     </button>
                   </div>
@@ -210,20 +210,22 @@ function Specification() {
             <button
               onClick={scrollPrev}
               disabled={!prevBtnEnabled}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 text-white disabled:opacity-0 transition-all hover:scale-125 hover:translate-x-[-4px]"
+              className="absolute -left-4 md:-left-14 top-1/2 -translate-y-1/2 z-10 h-14 w-14 md:h-16 md:w-16 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-xl border border-white/30 text-white shadow-soft opacity-70 group-hover/carousel:opacity-100 hover:bg-white/30 hover:scale-110 disabled:opacity-0! disabled:pointer-events-none transition-all duration-500 active:scale-95 group/btn"
               aria-label="Previous slide"
             >
-              <ChevronLeft className="h-10 w-10 md:h-14 md:w-14 stroke-[1px] drop-shadow-lg" />
+              <ChevronLeft className="h-8 w-8 md:h-10 md:w-10 stroke-[1.2px] transition-transform group-hover/btn:-translate-x-0.5" />
             </button>
             <button
               onClick={scrollNext}
               disabled={!nextBtnEnabled}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 text-white disabled:opacity-0 transition-all hover:scale-125 hover:translate-x-[4px]"
+              className="absolute -right-4 md:-right-14 top-1/2 -translate-y-1/2 z-10 h-14 w-14 md:h-16 md:w-16 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-xl border border-white/30 text-white shadow-soft opacity-70 group-hover/carousel:opacity-100 hover:bg-white/30 hover:scale-110 disabled:opacity-0! disabled:pointer-events-none transition-all duration-500 active:scale-95 group/btn"
               aria-label="Next slide"
             >
-              <ChevronRight className="h-10 w-10 md:h-14 md:w-14 stroke-[1px] drop-shadow-lg" />
+              <ChevronRight className="h-8 w-8 md:h-10 md:w-10 stroke-[1.2px] transition-transform group-hover/btn:translate-x-0.5" />
             </button>
           </div>
+          
+          <p className="mt-12 text-center text-xs tracking-[0.2em] uppercase text-ink/40 font-medium italic">Swipe or use arrows to explore more</p>
         </div>
       </section>
 
