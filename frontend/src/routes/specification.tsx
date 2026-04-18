@@ -154,16 +154,16 @@ function Specification() {
 
       <section className="bg-paper-soft py-20 md:py-28 overflow-hidden">
         <div className="container-luxe">
-          <div className="mb-12">
-            <h2 className="font-display text-3xl md:text-5xl text-ink uppercase tracking-tight text-center">
+          <div className="mb-14">
+            <h2 className="font-display text-4xl md:text-6xl text-ink uppercase tracking-tight text-center">
               Gallery
             </h2>
-            <p className="mt-4 text-ink/65 uppercase text-[10px] tracking-widest font-bold text-center">Click for full size images</p>
+            <p className="mt-5 text-ink/50 uppercase text-xs tracking-[0.2em] font-medium text-center italic">Click for full size images</p>
           </div>
 
           <div className="relative group/carousel">
-            <div className="embla" ref={emblaRef}>
-              <div className="flex gap-5 md:gap-6 ml-[-1.25rem] md:ml-[-1.5rem]">
+            <div className="embla overflow-hidden" ref={emblaRef}>
+              <div className="flex ml-[-1.25rem] md:ml-[-1.5rem]">
                 {GALLERY.map((g, i) => (
                   <div key={i} className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_25%] min-w-0 pl-[1.25rem] md:pl-[1.5rem]">
                     <button
@@ -179,10 +179,10 @@ function Specification() {
                         height={1024}
                         className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/15 transition-colors duration-500 flex items-center justify-center">
-                         <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 scale-90 group-hover:scale-100">
-                            <div className="w-12 h-12 rounded-full bg-paper/90 backdrop-blur-sm flex items-center justify-center text-ink shadow-2xl">
-                               <X className="h-5 w-5 rotate-45" />
+                      <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/20 transition-all duration-700 flex items-center justify-center">
+                         <div className="opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+                            <div className="w-14 h-14 rounded-full bg-paper/95 backdrop-blur-md flex items-center justify-center text-ink shadow-soft border border-paper/20">
+                               <X className="h-6 w-6 rotate-45 stroke-[1px]" />
                             </div>
                          </div>
                       </div>
@@ -196,22 +196,22 @@ function Specification() {
             <button
               onClick={scrollPrev}
               disabled={!prevBtnEnabled}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 h-10 w-10 md:h-12 md:w-12 flex items-center justify-center text-white/80 hover:text-white disabled:opacity-0 transition-all active:scale-90"
+              className="absolute -left-4 md:-left-8 top-1/2 -translate-y-1/2 z-10 h-12 w-12 md:h-16 md:w-16 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white shadow-soft opacity-0 group-hover/carousel:opacity-100 hover:bg-white/20 hover:scale-110 disabled:opacity-0! disabled:pointer-events-none transition-all duration-500 active:scale-95 group/btn"
               aria-label="Previous slide"
             >
-              <ChevronLeft className="h-10 w-10 md:h-12 md:w-12 stroke-[1.5px]" />
+              <ChevronLeft className="h-8 w-8 md:h-10 md:w-10 stroke-[1px] transition-transform group-hover/btn:-translate-x-0.5" />
             </button>
             <button
               onClick={scrollNext}
               disabled={!nextBtnEnabled}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 h-10 w-10 md:h-12 md:w-12 flex items-center justify-center text-white/80 hover:text-white disabled:opacity-0 transition-all active:scale-90"
+              className="absolute -right-4 md:-right-8 top-1/2 -translate-y-1/2 z-10 h-12 w-12 md:h-16 md:w-16 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white shadow-soft opacity-0 group-hover/carousel:opacity-100 hover:bg-white/20 hover:scale-110 disabled:opacity-0! disabled:pointer-events-none transition-all duration-500 active:scale-95 group/btn"
               aria-label="Next slide"
             >
-              <ChevronRight className="h-10 w-10 md:h-12 md:w-12 stroke-[1.5px]" />
+              <ChevronRight className="h-8 w-8 md:h-10 md:w-10 stroke-[1px] transition-transform group-hover/btn:translate-x-0.5" />
             </button>
           </div>
           
-          <p className="mt-8 text-center text-[10px] tracking-widest uppercase text-ink/30 font-bold">Swipe or use arrows to explore more</p>
+          <p className="mt-12 text-center text-xs tracking-[0.2em] uppercase text-ink/40 font-medium italic">Swipe or use arrows to explore more</p>
         </div>
       </section>
 

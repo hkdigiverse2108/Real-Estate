@@ -14,6 +14,18 @@ def run_command(cmd, cwd=None, shell=True):
     print(f"RUNNING: {cmd} in {cwd or 'root'}...")
     return subprocess.run(cmd, cwd=cwd, shell=shell)
 
+def get_env_port(env_path, key, default):
+    """Read a port value from an .env file."""
+    if os.path.exists(env_path):
+        with open(env_path, "r") as f:
+            for line in f:
+                if line.strip().startswith(f"{key}="):
+                    try:
+                        return line.split("=")[1].strip()
+                    except (IndexError, ValueError):
+                        pass
+    return str(default)
+
 def install_dependencies(frontend_dir, backend_dir):
     """Automatically install missing dependencies."""
     print("Checking dependencies...")
@@ -45,12 +57,20 @@ def run_services():
     # Ensure dependencies are installed
     install_dependencies(frontend_dir, backend_dir)
 
+    # Load ports from .env
+    env_path = os.path.join(backend_dir, ".env")
+    backend_port = get_env_port(env_path, "BACKEND_PORT", 8000)
+    if backend_port == "8000": # Fallback to PORT if BACKEND_PORT not found or default
+        backend_port = get_env_port(env_path, "PORT", 8000)
+    
+    frontend_port = get_env_port(env_path, "FRONTEND_PORT", 8080)
+
     print("\nStarting The Sandras Services...")
 
     # Start Backend (FastAPI)
-    print("Starting Backend (FastAPI)...")
+    print(f"Starting Backend (FastAPI) on port {backend_port}...")
     backend_process = subprocess.Popen(
-        f'"{sys.executable}" -m uvicorn app.main:app --reload --port 8000',
+        f'"{sys.executable}" -m uvicorn app.main:app --reload --port {backend_port}',
         cwd=backend_dir,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
@@ -61,9 +81,9 @@ def run_services():
     )
 
     # Start Frontend
-    frontend_cmd = "npm run dev"
+    frontend_cmd = f"npm run dev -- --port {frontend_port}"
     if is_command_available("bun") and os.path.exists(os.path.join(frontend_dir, "bun.lockb")):
-        frontend_cmd = "bun run dev"
+        frontend_cmd = f"bun run dev -- --port {frontend_port}"
     
     print(f"Starting Frontend ({frontend_cmd})...")
     frontend_process = subprocess.Popen(
