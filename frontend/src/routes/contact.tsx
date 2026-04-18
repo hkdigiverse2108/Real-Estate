@@ -22,11 +22,32 @@ export const Route = createFileRoute("/contact")({
 function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
-    e.currentTarget.reset();
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch("http://localhost:8000/api/inquiries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        setTimeout(() => setSubmitted(false), 4000);
+        (e.target as HTMLFormElement).reset();
+      } else {
+        console.error("Failed to submit inquiry");
+        alert("Sorry, there was an error submitting your inquiry. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting inquiry:", error);
+      alert("Sorry, there was a connection error. Please try again.");
+    }
   };
 
   return (

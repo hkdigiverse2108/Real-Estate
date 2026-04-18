@@ -1,3 +1,15 @@
+# General
+node_modules/
+dist/
+dist-ssr/
+.output/
+.vinxi/
+.tanstack/
+.nitro/
+*.local
+.wrangler/
+.dev.vars
+
 # Logs
 logs
 *.log
@@ -7,18 +19,18 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-.output
-.vinxi
-.tanstack/**
-.nitro
-*.local
-
-# Wrangler / Cloudflare
-.wrangler/
-.dev.vars
+# Python (Backend)
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.pytest_cache/
 
 # Editor directories and files
 .vscode/*
@@ -30,3 +42,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Project specific
+frontend/node_modules/
+frontend/dist/
+frontend/.tanstack/
+backend/__pycache__/
+backend/.venv/
