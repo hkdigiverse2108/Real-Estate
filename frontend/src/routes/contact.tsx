@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Header } from "@/components/sandars/Header";
 import { Footer } from "@/components/sandars/Footer";
+import { API_BASE_URL } from "@/lib/api";
 import contactImg from "@/assets/contact-conversation.jpg";
 import teaImg from "@/assets/contact-tea.jpg";
 
@@ -28,7 +29,7 @@ function ContactPage() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch("http://localhost:8000/api/inquiries", {
+      const response = await fetch(`${API_BASE_URL}/api/inquiries`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
