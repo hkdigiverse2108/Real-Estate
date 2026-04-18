@@ -22,6 +22,20 @@ import g8 from "@/assets/spec-gallery-8.png";
 import g9 from "@/assets/spec-gallery-9.png";
 import g10 from "@/assets/spec-gallery-10.png";
 
+const DiamondIcon = ({ className }: { className?: string }) => (
+  <svg
+    viewBox="0 0 100 100"
+    className={className}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect x="15" y="15" width="70" height="70" stroke="currentColor" strokeWidth="1.5" />
+    <path d="M50 15 L85 50 L50 85 L15 50 Z" stroke="currentColor" strokeWidth="1.5" />
+    <path d="M32.5 15 L32.5 85 M67.5 15 L67.5 85 M15 32.5 L85 32.5 M15 67.5 L85 67.5" stroke="currentColor" strokeWidth="1" opacity="0.6" />
+    <circle cx="50" cy="50" r="2" fill="currentColor" />
+  </svg>
+);
+
 export const Route = createFileRoute("/specification")({
   head: () => ({
     meta: [
@@ -169,7 +183,7 @@ function Specification() {
                     <button
                       onClick={() => setLightbox(i)}
                       aria-label={`Open ${g.alt}`}
-                      className="group relative w-full aspect-square overflow-hidden bg-ink/5 block"
+                      className="group relative w-full aspect-square overflow-hidden bg-ink/5 block cursor-pointer"
                     >
                       <img
                         src={g.src}
@@ -177,7 +191,7 @@ function Specification() {
                         loading="lazy"
                         width={1024}
                         height={1024}
-                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/20 transition-all duration-700 flex items-center justify-center">
                          <div className="opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
@@ -192,7 +206,7 @@ function Specification() {
               </div>
             </div>
 
-            {/* Navigation Buttons Overlay */}
+            {/* Arror Styling match reference image */}
             <button
               onClick={scrollPrev}
               disabled={!prevBtnEnabled}
