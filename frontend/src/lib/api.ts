@@ -89,3 +89,18 @@ export async function deleteInquiry(id: string, token: string) {
   if (!res.ok) throw new Error("Failed to delete inquiry");
   return res.json();
 }
+
+export async function submitInquiry(data: any) {
+  const res = await fetch(getApiUrl("/api/inquiries/"), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.detail || "Failed to submit inquiry");
+  }
+  return res.json();
+}

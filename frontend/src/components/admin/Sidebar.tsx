@@ -1,11 +1,12 @@
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
-import { LayoutDashboard, Building2, MessageSquare, LogOut } from "lucide-react";
+import { LayoutDashboard, Building2, MessageSquare, LogOut, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin" },
   { icon: Building2, label: "Properties", href: "/admin/properties" },
   { icon: MessageSquare, label: "Inquiries", href: "/admin/inquiries" },
+  { icon: Mail, label: "Newsletter", href: "/admin/newsletter" },
 ];
 
 export function Sidebar() {

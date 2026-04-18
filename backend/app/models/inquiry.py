@@ -4,8 +4,8 @@ from datetime import datetime
 
 class InquiryModel(BaseModel):
     title: Optional[str] = None
-    firstName: str
-    surname: str
+    firstName: Optional[str] = None
+    surname: Optional[str] = None
     email: EmailStr
     telephone: Optional[str] = None
     postcode: Optional[str] = None

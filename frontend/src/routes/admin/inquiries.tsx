@@ -18,7 +18,9 @@ function InquiriesPage() {
     try {
       const res = await fetch(`${API_BASE_URL}/api/inquiries`);
       const data = await res.json();
-      setInquiries(data);
+      // Filter out newsletter signups
+      const filtered = data.filter((item: any) => item.property !== "Newsletter Signup");
+      setInquiries(filtered);
     } catch (error) {
       toast.error("Failed to load inquiries");
     } finally {
@@ -58,8 +60,12 @@ function InquiriesPage() {
             <User className="h-5 w-5" />
           </div>
           <div>
-            <div className="font-display text-lg text-ink">{item.firstName} {item.surname}</div>
-            <div className="text-[10px] font-bold text-ink/30 uppercase tracking-widest">{item.postcode || "No Postcode"}</div>
+            <div className="font-display text-lg text-ink">
+              {item.firstName || item.surname ? `${item.firstName || ""} ${item.surname || ""}` : "Newsletter Member"}
+            </div>
+            <div className="text-[10px] font-bold text-ink/30 uppercase tracking-widest">
+              {item.postcode || "Social Feed Registration"}
+            </div>
           </div>
         </div>
       ),

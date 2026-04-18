@@ -18,6 +18,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AdminPropertiesRouteImport } from './routes/admin/properties'
+import { Route as AdminNewsletterRouteImport } from './routes/admin/newsletter'
 import { Route as AdminInquiriesRouteImport } from './routes/admin/inquiries'
 import { Route as PropertiesSlugIndexRouteImport } from './routes/properties.$slug.index'
 import { Route as PropertiesSlugApartmentsAptSlugRouteImport } from './routes/properties.$slug.apartments.$aptSlug'
@@ -67,6 +68,11 @@ const AdminPropertiesRoute = AdminPropertiesRouteImport.update({
   path: '/properties',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminNewsletterRoute = AdminNewsletterRouteImport.update({
+  id: '/newsletter',
+  path: '/newsletter',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminInquiriesRoute = AdminInquiriesRouteImport.update({
   id: '/inquiries',
   path: '/inquiries',
@@ -93,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/specification': typeof SpecificationRoute
   '/admin/inquiries': typeof AdminInquiriesRoute
+  '/admin/newsletter': typeof AdminNewsletterRoute
   '/admin/properties': typeof AdminPropertiesRoute
   '/admin/': typeof AdminIndexRoute
   '/properties/$slug/': typeof PropertiesSlugIndexRoute
@@ -106,6 +113,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/specification': typeof SpecificationRoute
   '/admin/inquiries': typeof AdminInquiriesRoute
+  '/admin/newsletter': typeof AdminNewsletterRoute
   '/admin/properties': typeof AdminPropertiesRoute
   '/admin': typeof AdminIndexRoute
   '/properties/$slug': typeof PropertiesSlugIndexRoute
@@ -121,6 +129,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/specification': typeof SpecificationRoute
   '/admin/inquiries': typeof AdminInquiriesRoute
+  '/admin/newsletter': typeof AdminNewsletterRoute
   '/admin/properties': typeof AdminPropertiesRoute
   '/admin/': typeof AdminIndexRoute
   '/properties/$slug/': typeof PropertiesSlugIndexRoute
@@ -137,6 +146,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/specification'
     | '/admin/inquiries'
+    | '/admin/newsletter'
     | '/admin/properties'
     | '/admin/'
     | '/properties/$slug/'
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/specification'
     | '/admin/inquiries'
+    | '/admin/newsletter'
     | '/admin/properties'
     | '/admin'
     | '/properties/$slug'
@@ -164,6 +175,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/specification'
     | '/admin/inquiries'
+    | '/admin/newsletter'
     | '/admin/properties'
     | '/admin/'
     | '/properties/$slug/'
@@ -247,6 +259,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPropertiesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/newsletter': {
+      id: '/admin/newsletter'
+      path: '/newsletter'
+      fullPath: '/admin/newsletter'
+      preLoaderRoute: typeof AdminNewsletterRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/inquiries': {
       id: '/admin/inquiries'
       path: '/inquiries'
@@ -273,12 +292,14 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminInquiriesRoute: typeof AdminInquiriesRoute
+  AdminNewsletterRoute: typeof AdminNewsletterRoute
   AdminPropertiesRoute: typeof AdminPropertiesRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminInquiriesRoute: AdminInquiriesRoute,
+  AdminNewsletterRoute: AdminNewsletterRoute,
   AdminPropertiesRoute: AdminPropertiesRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
