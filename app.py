@@ -86,6 +86,11 @@ def run_services():
         frontend_cmd = f"bun run dev -- --port {frontend_port}"
     
     print(f"Starting Frontend ({frontend_cmd})...")
+    
+    # Pass backend port to frontend for proxying
+    frontend_env = os.environ.copy()
+    frontend_env["VITE_PROXY_TARGET"] = f"http://localhost:{backend_port}"
+    
     frontend_process = subprocess.Popen(
         frontend_cmd,
         cwd=frontend_dir,
@@ -94,7 +99,8 @@ def run_services():
         text=True,
         bufsize=1,
         universal_newlines=True,
-        shell=True
+        shell=True,
+        env=frontend_env
     )
 
     def print_output(process, prefix):

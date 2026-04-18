@@ -4,6 +4,7 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import { AdminCard } from "@/components/admin/AdminCard";
 import { DataTable } from "@/components/admin/DataTable";
 import { PropertyEditor } from "@/components/admin/PropertyEditor";
+import { API_BASE_URL } from "@/lib/api";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin/properties")({
@@ -18,7 +19,7 @@ function PropertiesPage() {
 
   const fetchProperties = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/properties");
+      const res = await fetch(`${API_BASE_URL}/api/properties`);
       const data = await res.json();
       setProperties(data);
     } catch (error) {
@@ -35,8 +36,8 @@ function PropertiesPage() {
   const handleSave = async (formData: any) => {
     try {
       const url = editingProperty 
-        ? `http://localhost:8000/api/properties/${editingProperty.id || editingProperty._id}`
-        : "http://localhost:8000/api/properties/";
+        ? `${API_BASE_URL}/api/properties/${editingProperty.id || editingProperty._id}`
+        : `${API_BASE_URL}/api/properties/`;
       
       const method = editingProperty ? "PUT" : "POST";
       
@@ -64,7 +65,7 @@ function PropertiesPage() {
     if (!confirm("Are you certain you wish to remove this property?")) return;
 
     try {
-      const res = await fetch(`http://localhost:8000/api/properties/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/properties/${id}`, {
         method: "DELETE",
       });
 
