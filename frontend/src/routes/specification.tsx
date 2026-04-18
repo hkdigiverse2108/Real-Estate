@@ -196,18 +196,18 @@ function Specification() {
             <button
               onClick={scrollPrev}
               disabled={!prevBtnEnabled}
-              className="absolute -left-4 md:-left-8 top-1/2 -translate-y-1/2 z-10 h-12 w-12 md:h-16 md:w-16 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white shadow-soft opacity-0 group-hover/carousel:opacity-100 hover:bg-white/20 hover:scale-110 disabled:opacity-0! disabled:pointer-events-none transition-all duration-500 active:scale-95 group/btn"
+              className="absolute -left-4 md:-left-14 top-1/2 -translate-y-1/2 z-10 h-14 w-14 md:h-16 md:w-16 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-xl border border-white/30 text-white shadow-soft opacity-70 group-hover/carousel:opacity-100 hover:bg-white/30 hover:scale-110 disabled:opacity-0! disabled:pointer-events-none transition-all duration-500 active:scale-95 group/btn"
               aria-label="Previous slide"
             >
-              <ChevronLeft className="h-8 w-8 md:h-10 md:w-10 stroke-[1px] transition-transform group-hover/btn:-translate-x-0.5" />
+              <ChevronLeft className="h-8 w-8 md:h-10 md:w-10 stroke-[1.2px] transition-transform group-hover/btn:-translate-x-0.5" />
             </button>
             <button
               onClick={scrollNext}
               disabled={!nextBtnEnabled}
-              className="absolute -right-4 md:-right-8 top-1/2 -translate-y-1/2 z-10 h-12 w-12 md:h-16 md:w-16 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white shadow-soft opacity-0 group-hover/carousel:opacity-100 hover:bg-white/20 hover:scale-110 disabled:opacity-0! disabled:pointer-events-none transition-all duration-500 active:scale-95 group/btn"
+              className="absolute -right-4 md:-right-14 top-1/2 -translate-y-1/2 z-10 h-14 w-14 md:h-16 md:w-16 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-xl border border-white/30 text-white shadow-soft opacity-70 group-hover/carousel:opacity-100 hover:bg-white/30 hover:scale-110 disabled:opacity-0! disabled:pointer-events-none transition-all duration-500 active:scale-95 group/btn"
               aria-label="Next slide"
             >
-              <ChevronRight className="h-8 w-8 md:h-10 md:w-10 stroke-[1px] transition-transform group-hover/btn:translate-x-0.5" />
+              <ChevronRight className="h-8 w-8 md:h-10 md:w-10 stroke-[1.2px] transition-transform group-hover/btn:translate-x-0.5" />
             </button>
           </div>
           
