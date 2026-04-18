@@ -63,3 +63,24 @@ export async function fetchAssets(): Promise<string[]> {
   }
   return response.json();
 }
+
+export async function uploadAsset(file: File): Promise<{ filename: string; path: string }> {
+  const token = localStorage.getItem("admin_token");
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch(`${API_BASE_URL}/assets/upload`, {
+    method: "POST",
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.detail || "Failed to upload image");
+  }
+
+  return response.json();
+}

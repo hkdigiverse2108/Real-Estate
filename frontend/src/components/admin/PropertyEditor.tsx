@@ -1,10 +1,10 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Plus, Trash2, Save, X, Image as ImageIcon } from "lucide-react";
+import { Plus, Trash2, Save, X, Image as ImageIcon, Loader2, Upload } from "lucide-react";
 import { AdminCard } from "./AdminCard";
-import { useState } from "react";
-import { AssetPicker } from "./AssetPicker";
+import { useState, useRef } from "react";
+import { uploadAsset } from "@/lib/api";
 
 const apartmentSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -37,7 +37,9 @@ interface PropertyEditorProps {
 }
 
 export function PropertyEditor({ initialData, onSave, onCancel }: PropertyEditorProps) {
-  const [pickerConfig, setPickerConfig] = useState<{ field: keyof PropertyFormValues; open: boolean } | null>(null);
+  const [uploading, setUploading] = useState<{ [key: string]: boolean }>({});
+  const heroInputRef = useRef<HTMLInputElement>(null);
+  const featuredInputRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
@@ -67,6 +69,21 @@ export function PropertyEditor({ initialData, onSave, onCancel }: PropertyEditor
     control,
     name: "apartments",
   });
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: keyof PropertyFormValues) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(prev => ({ ...prev, [field]: true }));
+    try {
+      const result = await uploadAsset(file);
+      setValue(field, result.path);
+    } catch (err) {
+      alert("Failed to upload image. Please try again.");
+    } finally {
+      setUploading(prev => ({ ...prev, [field]: false }));
+    }
+  };
 
   const heroUrl = watch("hero");
   const featuredUrl = watch("featured_image");
@@ -98,50 +115,84 @@ export function PropertyEditor({ initialData, onSave, onCancel }: PropertyEditor
               {errors.slug && <p className="mt-1 text-xs text-rose">{errors.slug.message}</p>}
             </div>
 
-            <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-3">
+            <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-4">
                 <label className="block text-[10px] font-bold text-ink/40 uppercase tracking-widest">Main Hero Image</label>
-                <div 
-                  onClick={() => setPickerConfig({ field: "hero", open: true })}
-                  className="group relative aspect-video w-full cursor-pointer overflow-hidden rounded-2xl border-2 border-dashed border-ink/10 bg-paper-soft transition-all hover:border-rose/40"
+                <input 
+                  type="file" 
+                  ref={heroInputRef} 
+                  className="hidden" 
+                  accept="image/*" 
+                  onChange={(e) => handleFileUpload(e, "hero")} 
+                />
+                <button
+                  type="button"
+                  onClick={() => heroInputRef.current?.click()}
+                  disabled={uploading["hero"]}
+                  className="group relative aspect-video w-full overflow-hidden rounded-2xl border-2 border-dashed border-ink/10 bg-paper-soft transition-all hover:border-rose/40 disabled:opacity-50"
                 >
                   {heroUrl ? (
                     <>
                       <img src={heroUrl} alt="Hero" className="h-full w-full object-cover transition-transform group-hover:scale-105" />
                       <div className="absolute inset-0 flex items-center justify-center bg-ink/40 opacity-0 transition-opacity group-hover:opacity-100">
-                        <span className="text-[10px] font-bold text-white uppercase tracking-widest">Change Image</span>
+                        <Upload className="h-6 w-6 text-white" />
                       </div>
                     </>
                   ) : (
-                    <div className="flex flex-col items-center justify-center h-full gap-2 p-4 text-center">
-                      <ImageIcon className="h-6 w-6 text-ink/20" />
-                      <span className="text-[10px] font-bold text-ink/30 uppercase tracking-widest">Select From Gallery</span>
+                    <div className="flex flex-col items-center justify-center h-full gap-3 p-4 text-center">
+                      <div className="rounded-full bg-ink/5 p-4 transition-colors group-hover:bg-rose/5">
+                        <ImageIcon className="h-6 w-6 text-ink/20 group-hover:text-rose/40" />
+                      </div>
+                      <span className="text-[10px] font-bold text-ink/30 uppercase tracking-widest group-hover:text-ink">Click to Browse System</span>
                     </div>
                   )}
-                </div>
-                {errors.hero && <p className="text-xs text-rose">{errors.hero.message}</p>}
+                  {uploading["hero"] && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-paper/80 backdrop-blur-sm">
+                      <Loader2 className="h-8 w-8 text-rose animate-spin mb-2" />
+                      <span className="text-[10px] font-bold text-rose uppercase tracking-widest">Uploading...</span>
+                    </div>
+                  )}
+                </button>
+                {errors.hero && <p className="mt-1 text-xs text-rose">{errors.hero.message}</p>}
               </div>
 
-              <div className="space-y-3">
-                <label className="block text-[10px] font-bold text-ink/40 uppercase tracking-widest">Featured Card Image (Optional)</label>
-                <div 
-                  onClick={() => setPickerConfig({ field: "featured_image", open: true })}
-                  className="group relative aspect-video w-full cursor-pointer overflow-hidden rounded-2xl border-2 border-dashed border-ink/10 bg-paper-soft transition-all hover:border-rose/40"
+              <div className="space-y-4">
+                <label className="block text-[10px] font-bold text-ink/40 uppercase tracking-widest">Featured Card Image</label>
+                <input 
+                  type="file" 
+                  ref={featuredInputRef} 
+                  className="hidden" 
+                  accept="image/*" 
+                  onChange={(e) => handleFileUpload(e, "featured_image")} 
+                />
+                <button
+                  type="button"
+                  onClick={() => featuredInputRef.current?.click()}
+                  disabled={uploading["featured_image"]}
+                  className="group relative aspect-video w-full overflow-hidden rounded-2xl border-2 border-dashed border-ink/10 bg-paper-soft transition-all hover:border-rose/40 disabled:opacity-50"
                 >
                   {featuredUrl ? (
                     <>
                       <img src={featuredUrl} alt="Featured" className="h-full w-full object-cover transition-transform group-hover:scale-105" />
                       <div className="absolute inset-0 flex items-center justify-center bg-ink/40 opacity-0 transition-opacity group-hover:opacity-100">
-                        <span className="text-[10px] font-bold text-white uppercase tracking-widest">Change Image</span>
+                        <Upload className="h-6 w-6 text-white" />
                       </div>
                     </>
                   ) : (
-                    <div className="flex flex-col items-center justify-center h-full gap-2 p-4 text-center">
-                      <ImageIcon className="h-6 w-6 text-ink/20" />
-                      <span className="text-[10px] font-bold text-ink/30 uppercase tracking-widest">Select From Gallery</span>
+                    <div className="flex flex-col items-center justify-center h-full gap-3 p-4 text-center">
+                      <div className="rounded-full bg-ink/5 p-4 transition-colors group-hover:bg-rose/5">
+                        <ImageIcon className="h-6 w-6 text-ink/20 group-hover:text-rose/40" />
+                      </div>
+                      <span className="text-[10px] font-bold text-ink/30 uppercase tracking-widest group-hover:text-ink">Click to Browse System</span>
                     </div>
                   )}
-                </div>
+                  {uploading["featured_image"] && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-paper/80 backdrop-blur-sm">
+                      <Loader2 className="h-8 w-8 text-rose animate-spin mb-2" />
+                      <span className="text-[10px] font-bold text-rose uppercase tracking-widest">Uploading...</span>
+                    </div>
+                  )}
+                </button>
               </div>
             </div>
 
@@ -189,14 +240,6 @@ export function PropertyEditor({ initialData, onSave, onCancel }: PropertyEditor
               {errors.intro && <p className="mt-1 text-xs text-rose">{errors.intro.message}</p>}
             </div>
           </div>
-
-          {pickerConfig?.open && (
-            <AssetPicker 
-              currentValue={watch(pickerConfig.field) as string}
-              onSelect={(val) => setValue(pickerConfig.field, val)}
-              onClose={() => setPickerConfig(null)}
-            />
-          )}
 
           <div className="rounded-2xl border border-ink/5 bg-paper-soft/30 p-8">
             <div className="mb-6 flex items-center justify-between border-b border-ink/5 pb-4">
