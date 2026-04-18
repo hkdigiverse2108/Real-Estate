@@ -1,4 +1,5 @@
 from motor.motor_asyncio import AsyncIOMotorClient
+import certifi
 from app.core.config import settings
 
 class Database:
@@ -8,8 +9,12 @@ db = Database()
 
 async def connect_to_mongo():
     try:
-        # Added timeout to avoid hanging if the connection is bad
-        db.client = AsyncIOMotorClient(settings.MONGODB_URL, serverSelectionTimeoutMS=5000)
+        # Added timeout and tlsCAFile for robust macOS SSL support
+        db.client = AsyncIOMotorClient(
+            settings.MONGODB_URL, 
+            serverSelectionTimeoutMS=5000,
+            tlsCAFile=certifi.where()
+        )
         # Verify connection
         await db.client.admin.command('ping')
         print(f"DONE: Successfully connected to MongoDB: {settings.MONGODB_URL}")
