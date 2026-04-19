@@ -1,0 +1,101 @@
+Connecting to the_sandras...
+Traceback (most recent call last):
+  File "/Volumes/Project/Real-estate/backend/app/db/seed_properties.py", line 287, in <module>
+    asyncio.run(seed())
+    ~~~~~~~~~~~^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/Volumes/Project/Real-estate/backend/app/db/seed_properties.py", line 277, in seed
+    await db.properties.delete_many({})
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/Volumes/Project/Real-estate/.venv/lib/python3.13/site-packages/pymongo/synchronous/collection.py", line 1711, in delete_many
+    self._delete_retryable(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        filter,
+        ^^^^^^^
+    ...<6 lines>...
+        comment=comment,
+        ^^^^^^^^^^^^^^^^
+    ),
+    ^
+  File "/Volumes/Project/Real-estate/.venv/lib/python3.13/site-packages/pymongo/synchronous/collection.py", line 1587, in _delete_retryable
+    return self._database.client._retryable_write(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        (write_concern or self.write_concern).acknowledged and not multi,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        operation=_Op.DELETE,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Volumes/Project/Real-estate/.venv/lib/python3.13/site-packages/pymongo/synchronous/mongo_client.py", line 2083, in _retryable_write
+    return self._retry_with_session(retryable, func, s, bulk, operation, operation_id)
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/Project/Real-estate/.venv/lib/python3.13/site-packages/pymongo/synchronous/mongo_client.py", line 1968, in _retry_with_session
+    return self._retry_internal(
+           ~~~~~~~~~~~~~~~~~~~~^
+        func=func,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        operation_id=operation_id,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Volumes/Project/Real-estate/.venv/lib/python3.13/site-packages/pymongo/_csot.py", line 125, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "/Volumes/Project/Real-estate/.venv/lib/python3.13/site-packages/pymongo/synchronous/mongo_client.py", line 2014, in _retry_internal
+    ).run()
+      ~~~^^
+  File "/Volumes/Project/Real-estate/.venv/lib/python3.13/site-packages/pymongo/synchronous/mongo_client.py", line 2763, in run
+    return self._read() if self._is_read else self._write()
+                                              ~~~~~~~~~~~^^
+  File "/Volumes/Project/Real-estate/.venv/lib/python3.13/site-packages/pymongo/synchronous/mongo_client.py", line 2873, in _write
+    self._server = self._get_server()
+                   ~~~~~~~~~~~~~~~~^^
+  File "/Volumes/Project/Real-estate/.venv/lib/python3.13/site-packages/pymongo/synchronous/mongo_client.py", line 2856, in _get_server
+    return self._client._select_server(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._server_selector,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        operation_id=self._operation_id,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Volumes/Project/Real-estate/.venv/lib/python3.13/site-packages/pymongo/synchronous/mongo_client.py", line 1833, in _select_server
+    server = topology.select_server(
+        server_selector,
+    ...<2 lines>...
+        operation_id=operation_id,
+    )
+  File "/Volumes/Project/Real-estate/.venv/lib/python3.13/site-packages/pymongo/synchronous/topology.py", line 428, in select_server
+    server = self._select_server(
+        selector,
+    ...<4 lines>...
+        operation_id=operation_id,
+    )
+  File "/Volumes/Project/Real-estate/.venv/lib/python3.13/site-packages/pymongo/synchronous/topology.py", line 402, in _select_server
+    servers = self.select_servers(
+        selector,
+    ...<4 lines>...
+        deprioritized_servers,
+    )
+  File "/Volumes/Project/Real-estate/.venv/lib/python3.13/site-packages/pymongo/synchronous/topology.py", line 298, in select_servers
+    server_descriptions = self._select_servers_loop(
+        selector,
+    ...<4 lines>...
+        deprioritized_servers=deprioritized_servers,
+    )
+  File "/Volumes/Project/Real-estate/.venv/lib/python3.13/site-packages/pymongo/synchronous/topology.py", line 359, in _select_servers_loop
+    raise ServerSelectionTimeoutError(
+        f"{self._error_message(selector)}, Timeout: {timeout}s, Topology Description: {self.description!r}"
+    )
+pymongo.errors.ServerSelectionTimeoutError: ac-ntkpfxo-shard-00-00.lcbyqbq.mongodb.net:27017: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1032) (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms),ac-ntkpfxo-shard-00-02.lcbyqbq.mongodb.net:27017: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1032) (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms),ac-ntkpfxo-shard-00-01.lcbyqbq.mongodb.net:27017: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1032) (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms), Timeout: 30s, Topology Description: <TopologyDescription id: 69e50759644b8f789f0ed514, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-ntkpfxo-shard-00-00.lcbyqbq.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('ac-ntkpfxo-shard-00-00.lcbyqbq.mongodb.net:27017: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1032) (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>, <ServerDescription ('ac-ntkpfxo-shard-00-01.lcbyqbq.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('ac-ntkpfxo-shard-00-01.lcbyqbq.mongodb.net:27017: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1032) (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>, <ServerDescription ('ac-ntkpfxo-shard-00-02.lcbyqbq.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('ac-ntkpfxo-shard-00-02.lcbyqbq.mongodb.net:27017: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1032) (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>
