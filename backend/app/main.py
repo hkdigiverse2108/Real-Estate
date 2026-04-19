@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.endpoints import properties, inquiries, dashboard, auth, assets
+from app.api.endpoints import properties, inquiries, dashboard, auth, assets, settings as site_settings
 from app.db.mongodb import connect_to_mongo, close_mongo_connection
 from app.core.config import settings
 
@@ -29,6 +29,7 @@ app.include_router(assets.router, prefix="/api/assets", tags=["assets"])
 app.include_router(properties.router, prefix="/api/properties", tags=["properties"])
 app.include_router(inquiries.router, prefix="/api/inquiries", tags=["inquiries"])
 app.include_router(dashboard.router, prefix="/api/dashboard", tags=["dashboard"])
+app.include_router(site_settings.router, prefix="/api/settings", tags=["settings"])
 
 @app.get("/")
 async def root():

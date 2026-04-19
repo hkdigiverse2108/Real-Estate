@@ -1,13 +1,30 @@
 import { Logo } from "./Logo";
 import { Link } from "@tanstack/react-router";
 import { Instagram, Facebook, Linkedin, ArrowRight, Loader2 } from "lucide-react";
-import { useState } from "react";
-import { submitInquiry } from "@/lib/api";
+import { useState, useEffect } from "react";
+import { submitInquiry, API_BASE_URL } from "@/lib/api";
 import { toast } from "sonner";
 
 export const Footer = () => {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [settings, setSettings] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/settings`);
+        const data = await res.json();
+        setSettings(data);
+      } catch (error) {
+        console.error("Failed to fetch footer settings");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSettings();
+  }, []);
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,8 +46,18 @@ export const Footer = () => {
     }
   };
 
+  // No more hardcoded strings here. Relying strictly on DB or empty strings during load.
+  const contact = {
+    phone: settings?.phone || "",
+    email: settings?.email || "",
+    address: settings?.address || "",
+    instagram: settings?.instagram || "#",
+    facebook: settings?.facebook || "#",
+    linkedin: settings?.linkedin || "#"
+  };
+
   return (
-    <footer className="relative bg-ink text-paper pt-24 pb-12 overflow-hidden">
+    <footer className="relative bg-ink text-paper pt-24 pb-12 overflow-hidden min-h-[400px]">
       {/* Decorative top line */}
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
       
@@ -103,10 +130,13 @@ export const Footer = () => {
           <div className="space-y-8">
             <h4 className="text-[11px] uppercase tracking-[0.3em] text-gold font-bold">Location</h4>
             <address className="not-italic space-y-1 text-paper/60 font-sans text-sm leading-relaxed tracking-tight">
-              <p>The Sandars,</p>
-              <p>Coldharbour Lane,</p>
-              <p>Egham, Surrey,</p>
-              <p>TW20 8TD</p>
+              {loading ? (
+                <div className="w-48 h-12 bg-paper/5 animate-pulse rounded-md" />
+              ) : (
+                contact.address.split(',').map((line, i) => (
+                  <p key={i}>{line.trim()}{i < contact.address.split(',').length - 1 ? ',' : ''}</p>
+                ))
+              )}
             </address>
           </div>
 
@@ -114,21 +144,30 @@ export const Footer = () => {
           <div className="space-y-8">
             <h4 className="text-[11px] uppercase tracking-[0.3em] text-gold font-bold">Enquiries</h4>
             <div className="space-y-3">
-              <a href="tel:02037572828" className="block text-paper text-lg font-bold font-sans hover:text-gold transition-colors">
-                0203 757 2828
-              </a>
-              <a href="mailto:SunningdaleNewHomes@savills.com" className="block text-paper/60 text-sm font-bold font-sans hover:text-paper transition-colors">
-                SunningdaleNewHomes@savills.com
-              </a>
+              {loading ? (
+                <div className="space-y-3">
+                  <div className="w-32 h-6 bg-paper/5 animate-pulse rounded-md" />
+                  <div className="w-48 h-4 bg-paper/5 animate-pulse rounded-md" />
+                </div>
+              ) : (
+                <>
+                  <a href={`tel:${contact.phone.replace(/\s+/g, '')}`} className="block text-paper text-lg font-bold font-sans hover:text-gold transition-colors">
+                    {contact.phone}
+                  </a>
+                  <a href={`mailto:${contact.email}`} className="block text-paper/60 text-sm font-bold font-sans hover:text-paper transition-colors">
+                    {contact.email}
+                  </a>
+                </>
+              )}
             </div>
             <div className="flex items-center gap-4 pt-4">
-              <a href="#" className="p-2 border border-paper/10 rounded-full hover:border-gold/50 hover:text-gold transition-all duration-300">
+              <a href={contact.instagram} className="p-2 border border-paper/10 rounded-full hover:border-gold/50 hover:text-gold transition-all duration-300">
                 <Instagram className="h-4 w-4" />
               </a>
-              <a href="#" className="p-2 border border-paper/10 rounded-full hover:border-gold/50 hover:text-gold transition-all duration-300">
+              <a href={contact.facebook} className="p-2 border border-paper/10 rounded-full hover:border-gold/50 hover:text-gold transition-all duration-300">
                 <Facebook className="h-4 w-4" />
               </a>
-              <a href="#" className="p-2 border border-paper/10 rounded-full hover:border-gold/50 hover:text-gold transition-all duration-300">
+              <a href={contact.linkedin} className="p-2 border border-paper/10 rounded-full hover:border-gold/50 hover:text-gold transition-all duration-300">
                 <Linkedin className="h-4 w-4" />
               </a>
             </div>

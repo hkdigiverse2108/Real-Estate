@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/sandars/Header";
 import { Footer } from "@/components/sandars/Footer";
 import { API_BASE_URL } from "@/lib/api";
 import contactImg from "@/assets/contact-conversation.jpg";
 import teaImg from "@/assets/contact-tea.jpg";
+import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -12,7 +13,7 @@ export const Route = createFileRoute("/contact")({
       { title: "Contact \u2014 The Sandars" },
       { name: "description", content: "Get in touch with The Sandars luxury later living development in Egham, Surrey. Sales managed by Savills." },
       { property: "og:title", content: "Contact \u2014 The Sandars" },
-      { property: "og:description", content: "Find us at Coldharbour Lane, Egham, Surrey TW20 8TD. Sales by Savills \u2014 0203 757 2828." },
+      { property: "og:description", content: "Bespoke retirement lifestyles in Egham, Surrey. Get in touch with our sales team today." },
       { property: "og:image", content: contactImg },
       { name: "twitter:image", content: contactImg },
     ],
@@ -22,6 +23,30 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [settings, setSettings] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/settings`);
+        const data = await res.json();
+        setSettings(data);
+      } catch (error) {
+        console.error("Failed to fetch contact settings");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSettings();
+  }, []);
+
+  // Removed all hardcoded fallbacks
+  const contact = {
+    phone: settings?.phone || "",
+    email: settings?.email || "",
+    address: settings?.address || ""
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -96,22 +121,31 @@ function ContactPage() {
               savills
             </div>
 
-            <div className="mt-8 space-y-3 text-ink/85">
-              <p>
-                <span className="font-medium">Phone:</span>{" "}
-                <a href="tel:+441344295375" className="hover:text-rose transition-colors">
-                  +44 (0) 1344 295 375
-                </a>
-              </p>
-              <p>
-                <span className="font-medium">Email:</span>{" "}
-                <a
-                  href="mailto:SunningdaleNewHomes@savills.com"
-                  className="text-ink/70 underline underline-offset-2 hover:text-rose transition-colors"
-                >
-                  SunningdaleNewHomes@savills.com
-                </a>
-              </p>
+            <div className="mt-8 space-y-3 text-ink/85 min-h-[100px]">
+              {loading ? (
+                <div className="flex items-center gap-3 text-ink/30 italic text-sm">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Optimizing contact details...
+                </div>
+              ) : (
+                <>
+                  <p>
+                    <span className="font-medium">Phone:</span>{" "}
+                    <a href={`tel:${contact.phone.replace(/\s+/g, '')}`} className="hover:text-rose transition-colors">
+                      {contact.phone}
+                    </a>
+                  </p>
+                  <p>
+                    <span className="font-medium">Email:</span>{" "}
+                    <a
+                      href={`mailto:${contact.email}`}
+                      className="text-ink/70 underline underline-offset-2 hover:text-rose transition-colors"
+                    >
+                      {contact.email}
+                    </a>
+                  </p>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -130,9 +164,13 @@ function ContactPage() {
             The Sandars is just a 5-minute drive from Junction 12 of the M25 or Junction 3 of the M3
             and is located on the edge of the beautiful village of Thorpe in Surrey, just off Norlands Lane.
           </p>
-          <p className="mt-8 text-paper font-medium tracking-wide">
-            Coldharbour Lane, Egham, Surrey, TW20 8TD
-          </p>
+          <div className="mt-8 text-paper font-medium tracking-wide">
+            {loading ? (
+              <span className="opacity-50 animate-pulse">Locating development...</span>
+            ) : (
+              contact.address
+            )}
+          </div>
         </div>
       </section>
 
@@ -140,7 +178,7 @@ function ContactPage() {
       <section>
         <div className="w-full h-[360px] md:h-[420px] overflow-hidden">
           <iframe
-            title="Map of The Sandars, Coldharbour Lane, Egham, Surrey TW20 8TD"
+            title={`Map of ${contact.address}`}
             src="https://www.openstreetmap.org/export/embed.html?bbox=-0.5640%2C51.4040%2C-0.5040%2C51.4360&amp;layer=mapnik&amp;marker=51.4198%2C-0.5340"
             className="w-full h-full border-0"
             loading="lazy"
@@ -172,8 +210,8 @@ function ContactPage() {
               <Field label="Title" name="title" placeholder="Title" />
 
               <div className="grid sm:grid-cols-2 gap-6">
-                <Field label="First Name" name="firstName" placeholder="First Name" required />
-                <Field label="Surname" name="surname" placeholder="Surname" required />
+                <Field label="First Name" name="firstName" placeholder="First Name" />
+                <Field label="Surname" name="surname" placeholder="Surname" />
               </div>
 
               <div className="grid sm:grid-cols-2 gap-6">
@@ -193,7 +231,7 @@ function ContactPage() {
 
               {submitted && (
                 <p className="text-sm text-rose mt-2" role="status">
-                  Thank you \u2014 we will be in touch shortly.
+                  Thank you — we will be in touch shortly.
                 </p>
               )}
             </form>

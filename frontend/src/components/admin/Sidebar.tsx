@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
-import { LayoutDashboard, Building2, MessageSquare, LogOut, Mail } from "lucide-react";
+import { LayoutDashboard, Building2, MessageSquare, LogOut, Mail, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
@@ -7,6 +7,7 @@ const menuItems = [
   { icon: Building2, label: "Properties", href: "/admin/properties" },
   { icon: MessageSquare, label: "Inquiries", href: "/admin/inquiries" },
   { icon: Mail, label: "Newsletter", href: "/admin/newsletter" },
+  { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 
 export function Sidebar() {

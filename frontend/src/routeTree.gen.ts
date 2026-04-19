@@ -17,6 +17,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminSettingsRouteImport } from './routes/admin/settings'
 import { Route as AdminPropertiesRouteImport } from './routes/admin/properties'
 import { Route as AdminNewsletterRouteImport } from './routes/admin/newsletter'
 import { Route as AdminInquiriesRouteImport } from './routes/admin/inquiries'
@@ -63,6 +64,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminPropertiesRoute = AdminPropertiesRouteImport.update({
   id: '/properties',
   path: '/properties',
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/admin/inquiries': typeof AdminInquiriesRoute
   '/admin/newsletter': typeof AdminNewsletterRoute
   '/admin/properties': typeof AdminPropertiesRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/': typeof AdminIndexRoute
   '/properties/$slug/': typeof PropertiesSlugIndexRoute
   '/properties/$slug/apartments/$aptSlug': typeof PropertiesSlugApartmentsAptSlugRoute
@@ -115,6 +122,7 @@ export interface FileRoutesByTo {
   '/admin/inquiries': typeof AdminInquiriesRoute
   '/admin/newsletter': typeof AdminNewsletterRoute
   '/admin/properties': typeof AdminPropertiesRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin': typeof AdminIndexRoute
   '/properties/$slug': typeof PropertiesSlugIndexRoute
   '/properties/$slug/apartments/$aptSlug': typeof PropertiesSlugApartmentsAptSlugRoute
@@ -131,6 +139,7 @@ export interface FileRoutesById {
   '/admin/inquiries': typeof AdminInquiriesRoute
   '/admin/newsletter': typeof AdminNewsletterRoute
   '/admin/properties': typeof AdminPropertiesRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/': typeof AdminIndexRoute
   '/properties/$slug/': typeof PropertiesSlugIndexRoute
   '/properties/$slug/apartments/$aptSlug': typeof PropertiesSlugApartmentsAptSlugRoute
@@ -148,6 +157,7 @@ export interface FileRouteTypes {
     | '/admin/inquiries'
     | '/admin/newsletter'
     | '/admin/properties'
+    | '/admin/settings'
     | '/admin/'
     | '/properties/$slug/'
     | '/properties/$slug/apartments/$aptSlug'
@@ -162,6 +172,7 @@ export interface FileRouteTypes {
     | '/admin/inquiries'
     | '/admin/newsletter'
     | '/admin/properties'
+    | '/admin/settings'
     | '/admin'
     | '/properties/$slug'
     | '/properties/$slug/apartments/$aptSlug'
@@ -177,6 +188,7 @@ export interface FileRouteTypes {
     | '/admin/inquiries'
     | '/admin/newsletter'
     | '/admin/properties'
+    | '/admin/settings'
     | '/admin/'
     | '/properties/$slug/'
     | '/properties/$slug/apartments/$aptSlug'
@@ -252,6 +264,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/properties': {
       id: '/admin/properties'
       path: '/properties'
@@ -294,6 +313,7 @@ interface AdminRouteChildren {
   AdminInquiriesRoute: typeof AdminInquiriesRoute
   AdminNewsletterRoute: typeof AdminNewsletterRoute
   AdminPropertiesRoute: typeof AdminPropertiesRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
@@ -301,6 +321,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminInquiriesRoute: AdminInquiriesRoute,
   AdminNewsletterRoute: AdminNewsletterRoute,
   AdminPropertiesRoute: AdminPropertiesRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
