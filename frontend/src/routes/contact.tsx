@@ -177,12 +177,25 @@ function ContactPage() {
       {/* Map */}
       <section className="py-12 md:py-16">
         <div className="container-luxe">
-          <div className="w-full h-[360px] md:h-[500px] overflow-hidden rounded-3xl border border-ink/5 relative bg-paper-soft shadow-inner-luxe group">
+          <div className="w-full h-[360px] md:h-[500px] overflow-hidden rounded-3xl border border-ink/5 relative bg-paper-soft shadow-inner-luxe group cursor-pointer">
+            {/* Transparent click overlay for redirection */}
+            <a 
+              href="https://www.openstreetmap.org/?mlat=51.4198&mlon=-0.5340#map=16/51.4198/-0.5340" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="absolute inset-0 z-10 block"
+              aria-label="View on OpenStreetMap"
+            >
+              <div className="absolute top-6 right-6 z-20 bg-paper/90 backdrop-blur-md px-4 py-2 rounded-full border border-ink/5 text-[10px] uppercase tracking-widest font-bold text-ink opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0 shadow-lg">
+                View on Map
+              </div>
+            </a>
+            
             {/* We use a slight height increase and negative offset to clip the attribution for a cleaner look */}
             <iframe
               title={`Map of ${contact.address}`}
               src="https://www.openstreetmap.org/export/embed.html?bbox=-0.5640%2C51.4040%2C-0.5040%2C51.4360&amp;layer=mapnik&amp;marker=51.4198%2C-0.5340"
-              className="absolute top-0 left-0 w-full h-[calc(100%+30px)] border-0 grayscale hover:grayscale-0 transition-all duration-1000 ease-in-out opacity-85 hover:opacity-100"
+              className="absolute top-0 left-0 w-full h-[calc(100%+30px)] border-0 grayscale group-hover:grayscale-0 transition-all duration-1000 ease-in-out opacity-85 group-hover:opacity-100"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
