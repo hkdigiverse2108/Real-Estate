@@ -1,17 +1,41 @@
 const isServer = typeof window === "undefined";
 
-const getAutoDetectedApiBase = () => {
-  if (isServer) {
-    // In SSR, we MUST have an absolute URL for cross-server fetches.
-    // Nitro/TanStack Start environments usually provide VITE_API_URL.
-    return (import.meta.env.VITE_API_URL as string) || "http://localhost:8000";
-  }
+const isServer = typeof window === "undefined";
+
+const getApiBase = () => {
+  const envUrl = import.meta.env.VITE_API_URL as string;
   
-  // Browser: Default to relative paths for maximum compatibility with proxies
-  return ""; 
+  if (isServer) {
+    return envUrl || "http://localhost:8000";
+  }
+
+  // Browser Logic
+  const hostname = window.location.hostname;
+  const isLocalHost = hostname === "localhost" || hostname === "127.0.0.1";
+
+  // AGGRESSIVE OVERRIDE: If we are on a live domain, always default to relative paths
+  // unless we have an explicit non-localhost cross-domain API URL.
+  if (!isLocalHost) {
+    if (!envUrl || envUrl.includes("localhost") || envUrl.includes("127.0.0.1")) {
+      return ""; // Force relative path on live site
+    }
+  }
+
+  // Default fallbacks
+  if (envUrl) return envUrl;
+  if (isLocalHost) return `http://${hostname}:8000`;
+  
+  return "";
 };
 
-export const API_BASE_URL = (import.meta.env.VITE_API_URL as string) || getAutoDetectedApiBase();
+export const API_BASE_URL = getApiBase();
+
+// Diagnostic logging for live debugging
+if (!isServer) {
+  console.log("%c[API Config] Resolved Base URL:", "color: #ff00ff; font-weight: bold;", API_BASE_URL || "(relative)");
+}
+
+
 
 export const getApiUrl = (path: string) => {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
