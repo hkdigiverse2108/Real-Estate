@@ -23,18 +23,21 @@ function SettingsPage() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    const fetchSettings = async () => {
+    const loadSettings = async () => {
       try {
         const res = await fetch(`${API_BASE_URL}/api/settings`);
+        if (!res.ok) throw new Error("Failed");
         const data = await res.json();
-        setSettings(data);
+        if (data) setSettings(data);
       } catch (error) {
+        console.error("Settings load error:", error);
         toast.error("Failed to load site settings");
       } finally {
         setLoading(false);
       }
     };
-    fetchSettings();
+    loadSettings();
+
   }, []);
 
   const handleSave = async (e: React.FormEvent) => {

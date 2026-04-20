@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Header } from "@/components/sandars/Header";
 import { Footer } from "@/components/sandars/Footer";
-import { fetchPropertyBySlug } from "@/lib/api";
+import { fetchPropertyBySlug, getApiUrl } from "@/lib/api";
 import { useState } from "react";
 import { MapPin, Layout, Ruler, ChevronRight } from "lucide-react";
 

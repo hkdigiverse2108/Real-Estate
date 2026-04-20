@@ -2,28 +2,22 @@ const isServer = typeof window === "undefined";
 
 const getAutoDetectedApiBase = () => {
   if (isServer) {
-    return process.env.VITE_PROXY_TARGET || "http://localhost:8000";
+    // In SSR, we MUST have an absolute URL for cross-server fetches.
+    // Nitro/TanStack Start environments usually provide VITE_API_URL.
+    return (import.meta.env.VITE_API_URL as string) || "http://localhost:8000";
   }
   
-  // Browser logic: If we are on localhost, target the standard backend port
-  if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
-    return `http://${window.location.hostname}:8000`;
-  }
-  
-  // In production, we default to relative paths which use the current origin
+  // Browser: Default to relative paths for maximum compatibility with proxies
   return ""; 
 };
 
 export const API_BASE_URL = (import.meta.env.VITE_API_URL as string) || getAutoDetectedApiBase();
 
 export const getApiUrl = (path: string) => {
-  // Ensure we don't have double slashes when the base is empty or ends with a slash
-  const base = API_BASE_URL.replace(/\/$/, "");
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  return `${base}${normalizedPath}`;
+  if (!API_BASE_URL) return normalizedPath;
+  return `${API_BASE_URL.replace(/\/$/, "")}${normalizedPath}`;
 };
-
-
 
 export async function fetchProperties() {
   const res = await fetch(getApiUrl("/api/properties/"));
@@ -124,7 +118,16 @@ export async function submitInquiry(data: any) {
 }
 
 export async function fetchSettings() {
-  const res = await fetch(getApiUrl("/api/settings"));
-  if (!res.ok) throw new Error("Failed to fetch settings");
-  return res.json();
+  try {
+    const res = await fetch(getApiUrl("/api/settings"));
+    if (!res.ok) {
+      console.warn(`Settings fetch failed with status ${res.status}. Using fallback defaults.`);
+      return null;
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Critical error fetching site settings:", error);
+    return null; // Return null instead of throwing to prevent SSR crash
+  }
 }
+
