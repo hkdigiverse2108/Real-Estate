@@ -101,3 +101,8 @@ export async function submitInquiry(data: any) {
   return res.json();
 }
 
+export async function fetchSettings() {
+  const res = await fetch(getApiUrl("/api/settings"));
+  if (!res.ok) throw new Error("Failed to fetch settings");
+  return res.json();
+}

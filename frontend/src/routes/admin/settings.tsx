@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Save, Loader2, Phone, Mail, Instagram, Facebook, Linkedin } from "lucide-react";
+import { Save, Loader2, Phone, Mail, Instagram, Facebook, Linkedin, Video, MapPin } from "lucide-react";
 import { AdminCard } from "@/components/admin/AdminCard";
 import { API_BASE_URL } from "@/lib/api";
 import { toast } from "sonner";
@@ -16,7 +16,8 @@ function SettingsPage() {
     address: "",
     instagram: "",
     facebook: "",
-    linkedin: ""
+    linkedin: "",
+    video_url: ""
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -42,26 +43,38 @@ function SettingsPage() {
     
     const token = localStorage.getItem("admin_token");
     try {
+      const { _id, ...cleanSettings } = settings;
+      console.log("Sending settings update:", cleanSettings);
+      
       const res = await fetch(`${API_BASE_URL}/api/settings`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify(settings)
+        body: JSON.stringify(cleanSettings)
       });
 
-      if (res.status === 401) {
-        toast.error("Session expired. Please log in again.");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        console.error("Save failed with status:", res.status, errorData);
+        
+        if (res.status === 401) {
+          toast.error("Session expired. Please log in again.");
+        } else if (res.status === 422) {
+          const details = errorData.detail?.map((d: any) => `${d.loc[1]}: ${d.msg}`).join(", ");
+          toast.error(`Validation Error: ${details || "Check all fields"}`);
+        } else {
+          toast.error(errorData.detail || "Failed to save settings. Please try again.");
+        }
         return;
       }
 
-      if (res.ok) {
-        toast.success("Site configuration updated successfully");
-      } else {
-        toast.error("Failed to save settings. Please try again.");
-      }
+      toast.success("Site configuration updated successfully");
+      const updated = await res.json();
+      setSettings(updated);
     } catch (error) {
+      console.error("Network error during save:", error);
       toast.error("Network error while saving settings");
     } finally {
       setSaving(false);
@@ -114,6 +127,19 @@ function SettingsPage() {
                 required
               />
             </div>
+            <div className="space-y-2 md:col-span-2">
+              <label className="text-[10px] font-bold text-ink/40 uppercase tracking-widest flex items-center gap-2">
+                <MapPin className="h-3 w-3" />
+                Physical Address
+              </label>
+              <textarea 
+                value={settings.address}
+                onChange={(e) => setSettings({...settings, address: e.target.value})}
+                rows={2}
+                className="w-full bg-paper border border-ink/5 rounded-xl px-4 py-3 font-medium focus:outline-none focus:border-rose/30 transition-colors resize-none"
+                required
+              />
+            </div>
           </div>
         </AdminCard>
 
@@ -157,6 +183,25 @@ function SettingsPage() {
                 className="w-full bg-paper border border-ink/5 rounded-xl px-4 py-3 font-medium focus:outline-none focus:border-rose/30 transition-colors px-4 py-3"
                 placeholder="https://linkedin.com/..."
               />
+            </div>
+          </div>
+        </AdminCard>
+
+        <AdminCard title="Promotional Media" description="Manage the 'Watch the Film' promotional video link" className="border-none shadow-xl">
+          <div className="grid grid-cols-1 gap-8 p-6">
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-ink/40 uppercase tracking-widest flex items-center gap-2">
+                <Video className="h-3 w-3" />
+                Watch the Film URL (YouTube/Vimeo)
+              </label>
+              <input 
+                type="text" 
+                value={settings.video_url}
+                onChange={(e) => setSettings({...settings, video_url: e.target.value})}
+                className="w-full bg-paper border border-ink/5 rounded-xl px-4 py-3 font-medium focus:outline-none focus:border-rose/30 transition-colors"
+                placeholder="https://www.youtube.com/watch?v=..."
+              />
+              <p className="text-[9px] text-ink/30 italic">This link will be used for the "Watch the Film" button on the home page hero section.</p>
             </div>
           </div>
         </AdminCard>

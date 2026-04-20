@@ -12,7 +12,8 @@ DEFAULT_SETTINGS = {
     "address": "The Sandars, Coldharbour Lane, Egham, Surrey, TW20 8TD",
     "instagram": "#",
     "facebook": "#",
-    "linkedin": "#"
+    "linkedin": "#",
+    "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 }
 
 @router.get("", response_model=SiteSettingsResponse)
