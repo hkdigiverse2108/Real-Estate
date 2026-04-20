@@ -18,7 +18,7 @@ export const Lifestyle = () => (
           </p>
         </div>
         <Link
-          to="/contact"
+          to="/lifestyle"
           className="inline-block mt-10 text-sm tracking-display uppercase text-rose hover:text-ink border-b border-rose/40 hover:border-ink pb-1 transition-colors"
         >
           Discover more

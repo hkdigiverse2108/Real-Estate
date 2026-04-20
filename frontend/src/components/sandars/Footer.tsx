@@ -120,7 +120,6 @@ export const Footer = () => {
             <h4 className="text-[11px] uppercase tracking-[0.3em] text-gold font-bold">Development</h4>
             <nav className="flex flex-col space-y-4">
               <Link to="/" className="text-paper/60 hover:text-paper transition-colors text-sm font-sans tracking-tight">Home</Link>
-              <Link to="/properties" className="text-paper/60 hover:text-paper transition-colors text-sm font-sans tracking-tight">Collection</Link>
               <Link to="/specification" className="text-paper/60 hover:text-paper transition-colors text-sm font-sans tracking-tight">Specification</Link>
               <Link to="/contact" className="text-paper/60 hover:text-paper transition-colors text-sm font-sans tracking-tight">Contact</Link>
             </nav>
