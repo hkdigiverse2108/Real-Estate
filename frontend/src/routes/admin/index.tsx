@@ -30,12 +30,14 @@ function Dashboard() {
 
   useEffect(() => {
     async function fetchStats() {
+      const url = getApiUrl("/api/dashboard/stats/");
       try {
-        const res = await fetch(getApiUrl("/api/dashboard/stats/"));
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         setStats(data);
       } catch (error) {
-        console.error(`Failed to fetch stats from ${getApiUrl("/api/dashboard/stats/")}`, error);
+        console.error(`[Dashboard] Failed to fetch stats from ${url}:`, error);
       } finally {
         setLoading(false);
       }

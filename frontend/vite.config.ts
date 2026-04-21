@@ -9,6 +9,11 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 export default defineConfig({
   vite: {
     server: {
+      allowedHosts: true,
+      hmr: {
+        protocol: 'wss',
+        clientPort: 443,
+      },
       proxy: {
         "/api": {
           target: process.env.VITE_PROXY_TARGET,

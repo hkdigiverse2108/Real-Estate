@@ -3,18 +3,16 @@ const isServer = typeof window === "undefined";
 const getApiBase = () => {
   const isBrowser = typeof window !== "undefined";
   
-  // 1. Explicit Override (highest priority)
-  const envUrl = import.meta.env.VITE_API_URL as string;
-  if (envUrl) return envUrl;
-
-  // 2. Browser Logic: Always use relative paths by default
+  // 1. In browser, we ALWAYS prefer relative paths to leverage proxies and SSL correctly
   if (isBrowser) {
-    // SECURITY: Even if a VITE_BACKEND_PORT exists, if we are in a public domain, 
-    // we should NOT fallback to 127.0.0.1. Relativeness is safer for SSL/Proxies.
     return "";
   }
 
-  // 3. SSR Logic fallback for development
+  // 2. Explicit Override for SSR/Scripts
+  const envUrl = import.meta.env.VITE_API_URL as string;
+  if (envUrl) return envUrl;
+
+  // 3. Fallback for Local Development SSR
   const backendPort = import.meta.env.VITE_BACKEND_PORT;
   if (backendPort) {
     return `http://127.0.0.1:${backendPort}`;
@@ -25,47 +23,38 @@ const getApiBase = () => {
 
 export const API_BASE_URL = getApiBase();
 
-// Utility to get the "clean" fetch to avoid interception by dev-tool proxies
+// Utility to get the "clean" fetch and handle path normalization
 const safeFetch = async (url: string, options?: RequestInit) => {
-  // If we are on a public domain, and somehow an old tool is still trying to use localhost,
-  // we FORCE it back to the absolute URL.
   let targetUrl = url;
+  
   if (typeof window !== "undefined") {
+    // If somehow an absolute localhost URL leaked in on a public domain, fix it
     const isPublicHost = !window.location.hostname.includes("127.0.0.1") && !window.location.hostname.includes("localhost");
     if (isPublicHost && (url.includes("127.0.0.1") || url.includes("localhost"))) {
-       console.warn("[API Sanity Check] Blocking attempted localhost fetch on public domain. Redirecting to relative origin.");
+       console.warn("[API Sanity Check] Sanitizing absolute localhost URL to relative path.");
        targetUrl = url.replace(/http:\/\/127\.0\.0\.1:\d+/, "").replace(/http:\/\/localhost:\d+/, "");
     }
   }
+  
   return fetch(targetUrl, options);
 };
 
 export const getApiUrl = (path: string) => {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   
+  // In the browser, we always return the relative path.
+  // This ensures the request goes to the same origin/port, catching the Vite or Nginx proxy.
   if (typeof window !== "undefined") {
-    const isPublicHost = !window.location.hostname.includes("127.0.0.1") && !window.location.hostname.includes("localhost");
-    
-    // If we are on a public domain, FORCE the current origin to bypass any local dev proxies or stale base tags.
-    if (isPublicHost) {
-      const origin = window.location.origin.replace(/\/$/, "");
-      return `${origin}${normalizedPath}`;
-    }
+    return normalizedPath;
   }
 
   if (!API_BASE_URL) return normalizedPath;
   return `${API_BASE_URL.replace(/\/$/, "")}${normalizedPath}`;
 };
 
-// Extra diagnostic logging
+// Diagnostic logging
 if (typeof window !== "undefined") {
-  console.log("%c[API Config] Dynamic Base URL Discovery:", "color: #ff00ff; font-weight: bold; background: #330033; padding: 2px 6px; border-radius: 4px;");
-  console.log("  - FINAL API URL (Settings):", getApiUrl("/api/settings"));
-  
-  // Test if fetch is native or monkey-patched
-  const fetchStr = window.fetch.toString();
-  const isPatched = !fetchStr.includes("[native code]");
-  console.log("  - Fetch Implementation:", isPatched ? "MODIFIED (Likely by Dev Tools)" : "Native");
+  console.log("%c[API Config] Mode: Browser (Relative Paths Enforced)", "color: #00ffaa; font-weight: bold; background: #002211; padding: 2px 6px; border-radius: 4px;");
 }
 
 export async function fetchProperties() {
