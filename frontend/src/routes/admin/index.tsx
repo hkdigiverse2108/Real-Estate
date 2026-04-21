@@ -30,7 +30,7 @@ function Dashboard() {
 
   useEffect(() => {
     async function fetchStats() {
-      const url = getApiUrl("/api/dashboard/stats/");
+      const url = getApiUrl("/api/dashboard/stats");
       try {
         const res = await fetch(url);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);

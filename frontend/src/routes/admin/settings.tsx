@@ -25,12 +25,12 @@ function SettingsPage() {
   useEffect(() => {
     const loadSettings = async () => {
       try {
-        const res = await fetch(getApiUrl("/api/settings/"));
+        const res = await fetch(getApiUrl("/api/settings"));
         if (!res.ok) throw new Error("Failed");
         const data = await res.json();
         if (data) setSettings(data);
       } catch (error) {
-        console.error(`Settings load error from ${getApiUrl("/api/settings/")}:`, error);
+        console.error(`Settings load error from ${getApiUrl("/api/settings")}:`, error);
         toast.error("Failed to load site settings");
       } finally {
         setLoading(false);
@@ -49,7 +49,7 @@ function SettingsPage() {
       const { _id, ...cleanSettings } = settings;
       console.log("Sending settings update:", cleanSettings);
       
-      const res = await fetch(getApiUrl("/api/settings/"), {
+      const res = await fetch(getApiUrl("/api/settings"), {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
