@@ -175,30 +175,39 @@ function ContactPage() {
         </div>
       </section>
 
-      {/* Map */}
-      <section className="py-12 md:py-16">
-        <div className="container-luxe">
-          <div className="w-full h-[360px] md:h-[500px] overflow-hidden rounded-3xl border border-ink/5 relative bg-paper-soft shadow-inner-luxe group cursor-pointer">
-            {/* Transparent click overlay for redirection */}
-            <a 
-              href="https://maps.app.goo.gl/vZpbzjuWmdsk9yQG6" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="absolute inset-0 z-10 block"
-              aria-label="View on Google Maps"
-            >
-              <div className="absolute top-6 right-6 z-20 bg-paper/90 backdrop-blur-md px-4 py-2 rounded-full border border-ink/5 text-[10px] uppercase tracking-widest font-bold text-ink opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0 shadow-lg">
-                View on Google Maps
+      {/* Map Section */}
+      <section className="py-12 md:py-16 bg-paper">
+        <div className="relative w-full h-[400px] md:h-[600px] overflow-hidden group cursor-pointer shadow-inner">
+          {/* Clickable Overlay */}
+          <a 
+            href="https://maps.app.goo.gl/vZpbzjuWmdsk9yQG6" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="absolute inset-0 z-10 block"
+            aria-label="View on Google Maps"
+          >
+            <div className="absolute top-8 left-10 z-20 bg-white/95 backdrop-blur-md px-6 py-2 rounded-full border border-ink/5 text-[10px] uppercase tracking-widest font-bold text-ink opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0 shadow-lg">
+              View on Google Maps
+            </div>
+          </a>
+          
+          <iframe
+            title={`Map of ${contact.address}`}
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19909.12130396001!2d-0.5208182!3d51.4096667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487677cee2ffa2ad%3A0xdbc5af55e8767878!2sEden%20Retirement%20Living!5e0!3m2!1sen!2sin!4v1713763784123!5m2!1sen!2sin"
+            className="absolute top-0 left-0 w-full h-full border-0 grayscale group-hover:grayscale-0 transition-all duration-1000 ease-in-out opacity-85 group-hover:opacity-100"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+
+          {/* Location Label - Refined */}
+          <div className="absolute bottom-8 left-8 z-20 pointer-events-none hidden md:block">
+            <div className="bg-white/80 backdrop-blur-xl px-6 py-3 border border-ink/5 shadow-2xl flex items-center gap-4">
+              <div className="w-1 h-8 bg-rose/40" />
+              <div className="flex flex-col">
+                <span className="text-[12px] font-bold uppercase tracking-[0.3em] text-ink">Eden Retirement Living</span>
+                <span className="text-[10px] uppercase tracking-[0.1em] text-ink/40">{contact.address || "Cemex House, Coldharbour Ln, Egham TW20 8TD"}</span>
               </div>
-            </a>
-            
-            <iframe
-              title={`Map of ${contact.address}`}
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19909.12130396001!2d-0.5208182!3d51.4096667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487677cee2ffa2ad%3A0xdbc5af55e8767878!2sEden%20Retirement%20Living!5e0!3m2!1sen!2sin!4v1713763784123!5m2!1sen!2sin"
-              className="absolute top-0 left-0 w-full h-full border-0 grayscale group-hover:grayscale-0 transition-all duration-1000 ease-in-out opacity-85 group-hover:opacity-100"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+            </div>
           </div>
         </div>
       </section>

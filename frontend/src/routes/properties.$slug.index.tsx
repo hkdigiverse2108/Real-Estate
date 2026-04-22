@@ -160,8 +160,8 @@ function PropertyPage() {
 
       {/* Location Section */}
       <section className="py-20 md:py-32 bg-paper-soft overflow-hidden border-t border-ink/5">
-        <div className="container-luxe max-w-[1300px]">
-          <div className="text-center mb-16">
+        <div className="container-luxe mb-16">
+          <div className="text-center">
             <h2 className="font-display text-[44px] md:text-[56px] uppercase tracking-[0.2em] mb-6 text-ink/80">
               Location
             </h2>
@@ -169,32 +169,37 @@ function PropertyPage() {
               The Sandars is perfectly situated to enjoy both the tranquility of Surrey and the convenience of nearby links
             </p>
           </div>
-          
-          <div className="relative aspect-[21/9] w-full bg-ink/5 rounded-2xl overflow-hidden group shadow-2xl cursor-pointer">
-            {/* Clickable Overlay */}
-            <a 
-              href="https://maps.app.goo.gl/vZpbzjuWmdsk9yQG6" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="absolute inset-0 z-10 block"
-              aria-label="View on Google Maps"
-            >
-              <div className="absolute top-6 right-6 z-20 bg-white/90 backdrop-blur-md px-5 py-2 rounded-full border border-ink/5 text-[10px] uppercase tracking-widest font-bold text-ink opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0 shadow-lg">
-                View on Google Maps
-              </div>
-            </a>
+        </div>
+        
+        <div className="relative w-full h-[450px] md:h-[600px] bg-ink/5 group cursor-pointer">
+          {/* Clickable Overlay */}
+          <a 
+            href="https://maps.app.goo.gl/vZpbzjuWmdsk9yQG6" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="absolute inset-0 z-10 block"
+            aria-label="View on Google Maps"
+          >
+            <div className="absolute top-8 left-10 z-20 bg-white/95 backdrop-blur-md px-8 py-3 rounded-full border border-ink/5 text-[11px] uppercase tracking-[0.2em] font-bold text-ink opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0 shadow-2xl">
+              View on Google Maps
+            </div>
+          </a>
 
-            <iframe
-              title="Location Map"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19909.12130396001!2d-0.5208182!3d51.4096667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487677cee2ffa2ad%3A0xdbc5af55e8767878!2sEden%20Retirement%20Living!5e0!3m2!1sen!2sin!4v1713763784123!5m2!1sen!2sin"
-              className="absolute inset-0 w-full h-full border-0 grayscale group-hover:grayscale-0 transition-all duration-1000 ease-in-out"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-            {/* Keeping the button as well for explicit CTA */}
-            <div className="absolute bottom-6 right-6 z-20 pointer-events-none">
-              <div className="bg-white/90 backdrop-blur-md px-6 py-3 rounded-full border border-ink/5 text-[11px] uppercase tracking-[0.2em] font-bold text-ink shadow-xl">
-                Open in Google Maps
+          <iframe
+            title="Location Map"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19909.12130396001!2d-0.5208182!3d51.4096667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487677cee2ffa2ad%3A0xdbc5af55e8767878!2sEden%20Retirement%20Living!5e0!3m2!1sen!2sin!4v1713763784123!5m2!1sen!2sin"
+            className="absolute inset-0 w-full h-full border-0 grayscale group-hover:grayscale-0 transition-shadow duration-1000 ease-in-out"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+          
+          {/* Location Label - Refined */}
+          <div className="absolute bottom-8 left-8 z-20 pointer-events-none">
+            <div className="bg-white/80 backdrop-blur-xl px-6 py-3 border border-ink/5 shadow-2xl flex items-center gap-4">
+              <div className="w-1 h-8 bg-rose/40" />
+              <div className="flex flex-col">
+                <span className="text-[12px] font-bold uppercase tracking-[0.3em] text-ink">Eden Retirement Living</span>
+                <span className="text-[8px] uppercase tracking-[0.1em] text-ink/40">Cemex House, Egham TW20 8TD</span>
               </div>
             </div>
           </div>
