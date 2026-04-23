@@ -14,15 +14,15 @@ export const About = () => (
             height={896}
           />
         </div>
-        <div className="hidden md:block absolute -right-6 -bottom-6 h-32 w-32 border border-gold/40" />
+        <div className="hidden md:block absolute -right-6 -bottom-6 h-32 w-32 border border-brick opacity-40" />
       </div>
 
       <div>
-        <p className="text-xs tracking-display uppercase text-gold mb-5">Discover</p>
+        <p className="text-xs tracking-display uppercase text-sage font-bold mb-5">Discover</p>
         <h2 className="font-display text-4xl md:text-5xl leading-[1.1] text-ink mb-6">
           Discover the Sandars
         </h2>
-        <div className="space-y-5 text-ink/75 leading-relaxed text-[17px]">
+        <div className="space-y-5 text-grey leading-relaxed text-[17px]">
           <p>
             The Sandars is a unique, state of the art development for luxury later living based on the edge of the beautiful village of Thorpe, in Surrey. It is set within the 'Runnymede Green Belt Area' and partially within the 'Thorpe Conservation Area'.
           </p>
@@ -35,7 +35,7 @@ export const About = () => (
         </div>
         <a
           href="#lifestyle"
-          className="inline-block mt-10 text-sm tracking-display uppercase text-gold hover:text-ink border-b border-gold/40 hover:border-ink pb-1 transition-colors"
+          className="inline-block mt-10 text-sm tracking-display uppercase text-gold hover:text-sage border-b border-road/40 hover:border-sage pb-1 transition-colors"
         >
           Discover more about the Sandars lifestyle
         </a>

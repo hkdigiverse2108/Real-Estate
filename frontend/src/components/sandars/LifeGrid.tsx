@@ -15,10 +15,10 @@ const ITEMS = [
 ];
 
 export const LifeGrid = () => (
-  <section className="py-20 md:py-28 bg-paper-soft">
+  <section className="py-20 md:py-28 bg-stone/20">
     <div className="container-luxe">
       <div className="text-center max-w-2xl mx-auto mb-14 md:mb-20">
-        <p className="text-xs tracking-display uppercase text-gold mb-5">Image caption</p>
+        <p className="text-xs tracking-display uppercase text-sage font-bold mb-5">Nature & Lifestyle</p>
         <h2 className="font-display text-4xl md:text-5xl leading-[1.1] text-ink">
           Life at the Sandars
         </h2>

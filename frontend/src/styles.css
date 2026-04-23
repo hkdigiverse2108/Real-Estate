@@ -61,19 +61,29 @@
   --radius: 0.25rem;
 
   /* Primary Brand Definitions */
-  --ink: oklch(0.282 0.003 260); /* Charcoal #2E2E2E */
-  --paper: oklch(0.963 0.005 85); /* Off-White #F6F3EF */
-  --paper-soft: oklch(0.93 0.005 85);
-  --gold: oklch(0.628 0.088 81); /* Warm Gold #B08B56 */
-  --grey: oklch(0.674 0.002 260); /* Cool Grey #9A9A9A */
+  --ink: #2E2E2E; /* Charcoal */
+  --ink-rgb: 46, 46, 46;
+  --paper: #F6F3EF; /* Off-White */
+  --paper-rgb: 246, 243, 239;
+  --paper-soft: #EFEBE4; 
+  --gold: #B08B56; /* Warm Gold */
+  --gold-rgb: 176, 139, 86;
+  --grey: #9A9A9A; /* Cool Grey */
+  --grey-rgb: 154, 154, 154;
   
   /* Accents */
-  --sage: oklch(0.735 0.038 145); /* Sage Green #A4B49E */
-  --lake: oklch(0.675 0.065 230); /* Lake Blue #6FA2B8 */
-  --brick: oklch(0.495 0.115 35); /* Brick Red #A44E3F */
-  --stone: oklch(0.805 0.025 85); /* Natural Stone #D4C7B3 */
-  --forest: oklch(0.355 0.04 165); /* Forest Green #355042 */
-  --road: oklch(0.675 0.05 85); /* Road Tan #B89E81 */
+  --sage: #A4B49E; /* Sage Green */
+  --sage-rgb: 164, 180, 158;
+  --lake: #6FA2B8; /* Lake Blue */
+  --lake-rgb: 111, 162, 184;
+  --brick: #A44E3F; /* Brick Red */
+  --brick-rgb: 164, 78, 63;
+  --stone: #D4C7B3; /* Natural Stone */
+  --stone-rgb: 212, 199, 179;
+  --forest: #355042; /* Forest Green */
+  --forest-rgb: 53, 80, 66;
+  --road: #B89E81; /* Road Tan */
+  --road-rgb: 184, 158, 129;
 
   /* shadcn/ui Standard Mappings */
   --background: var(--paper);
@@ -99,8 +109,8 @@
   --destructive: oklch(0.55 0.22 27);
   --destructive-foreground: oklch(1 0 0);
 
-  --border: oklch(0.282 0.003 260 / 0.1);
-  --input: oklch(0.282 0.003 260 / 0.1);
+  --border: rgba(var(--road-rgb), 0.3); /* Road Tan for Detail Lines */
+  --input: rgba(var(--road-rgb), 0.2);
   --ring: var(--gold);
 }
 
@@ -139,15 +149,16 @@
 
   body {
     background-color: var(--color-paper);
-    color: var(--color-ink);
+    color: var(--color-grey); /* Body Copy / Subtext */
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
 
-  h1, h2, h3, h4, h5 {
+  h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     font-weight: 400;
     letter-spacing: -0.01em;
+    color: var(--color-ink); /* Primary Text / Headings */
   }
 }
 

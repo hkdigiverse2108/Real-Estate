@@ -64,7 +64,7 @@ export const Hero = () => {
               <div className="absolute inset-0 bg-gradient-to-b from-ink/30 via-ink/20 to-ink/55" />
 
               <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
-                <p className="text-paper/90 tracking-display text-xs md:text-sm uppercase mb-6 fade-up">
+                <p className={`tracking-display text-xs md:text-sm uppercase mb-6 fade-up ${idx === 1 ? 'text-sage' : 'text-paper/90'}`}>
                   {s.eyebrow}
                 </p>
                 <h1

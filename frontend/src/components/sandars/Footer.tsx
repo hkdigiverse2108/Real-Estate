@@ -57,9 +57,9 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="relative bg-ink text-paper pt-24 pb-12 overflow-hidden min-h-[400px]">
+    <footer className="relative bg-forest text-paper pt-24 pb-12 overflow-hidden min-h-[400px]">
       {/* Decorative top line */}
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-road/40 to-transparent" />
       
       <div className="container-luxe">
         {/* Top Section: Brand & Newsletter */}

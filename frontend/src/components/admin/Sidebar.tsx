@@ -20,10 +20,10 @@ export function Sidebar() {
   };
 
   return (
-    <div className="flex h-screen w-64 flex-col border-r border-ink/5 bg-[#141416] p-4 text-white">
+    <div className="flex h-screen w-64 flex-col border-r border-ink/5 bg-ink p-4 text-white">
       <div className="mb-10 px-4 py-8">
         <h1 className="font-display text-2xl font-semibold tracking-tight text-white">
-          THE SANDRAS
+          THE SANDARS
           <span className="block text-[9px] tracking-[0.3em] text-gold font-sans font-bold uppercase">Administrator</span>
         </h1>
       </div>
