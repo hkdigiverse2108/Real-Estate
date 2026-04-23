@@ -114,7 +114,7 @@ export const Footer = () => {
         </div>
 
         {/* Middle Section: Navigation & Contact */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20 border-t border-paper/10 pt-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-20 border-t border-paper/10 pt-20">
           {/* Navigation */}
           <div className="space-y-8">
             <h4 className="text-[11px] uppercase tracking-[0.3em] text-gold font-bold">Development</h4>
@@ -169,18 +169,6 @@ export const Footer = () => {
               <a href={contact.linkedin} className="p-2 border border-paper/10 rounded-full hover:border-gold/50 hover:text-gold transition-all duration-300">
                 <Linkedin className="h-4 w-4" />
               </a>
-            </div>
-          </div>
-
-          {/* Partner */}
-          <div className="lg:text-right flex flex-col items-start lg:items-end justify-between h-full">
-            <div className="space-y-4">
-              <h4 className="text-[11px] uppercase tracking-[0.3em] text-gold font-bold">Representation</h4>
-              <div className="bg-gold w-[110px] h-[110px] flex items-center justify-center p-4 shadow-xl">
-                <span className="text-ink text-[24px] font-black lowercase tracking-tighter font-sans leading-none">
-                  savills
-                </span>
-              </div>
             </div>
           </div>
         </div>

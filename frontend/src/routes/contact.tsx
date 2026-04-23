@@ -12,7 +12,7 @@ export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: "Contact \u2014 The Sandars" },
-      { name: "description", content: "Get in touch with The Sandars luxury later living development in Egham, Surrey. Sales managed by Savills." },
+      { name: "description", content: "Get in touch with The Sandars luxury later living development in Egham, Surrey." },
       { property: "og:title", content: "Contact \u2014 The Sandars" },
       { property: "og:description", content: "Bespoke retirement lifestyles in Egham, Surrey. Get in touch with our sales team today." },
       { property: "og:image", content: contactImg },
@@ -99,7 +99,7 @@ function ContactPage() {
         </div>
       </section>
 
-      {/* Contact us — image + savills info */}
+      {/* Contact us */}
       <section className="bg-paper-soft py-16 md:py-24">
         <div className="container-luxe grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
           <div className="aspect-[4/3] overflow-hidden bg-ink/5">
@@ -117,10 +117,6 @@ function ContactPage() {
             <h2 className="font-display text-3xl md:text-4xl uppercase tracking-tight text-ink/80 mb-10">
               Contact us
             </h2>
-
-            <div className="inline-block bg-gold text-ink font-bold tracking-wide text-2xl md:text-3xl px-5 py-3 shadow-sm">
-              savills
-            </div>
 
             <div className="mt-8 space-y-3 text-ink/85 min-h-[100px]">
               {loading ? (
