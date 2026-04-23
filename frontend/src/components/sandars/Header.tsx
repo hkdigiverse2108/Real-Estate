@@ -71,8 +71,8 @@ export const Header = () => {
         scrolled ? "bg-paper/95 backdrop-blur-md shadow-card" : "bg-paper"
       }`}
     >
-      <div className="container-luxe flex items-center justify-between py-5 md:py-6">
-        <Logo />
+      <div className="w-full px-4 md:px-8 flex items-center justify-between py-5 md:py-6">
+        <Logo size="md" />
 
         <nav aria-label="Primary" className="hidden lg:flex items-center gap-8">
           {NAV.map((item) => (

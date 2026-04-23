@@ -65,13 +65,7 @@ export const Footer = () => {
         {/* Top Section: Brand & Newsletter */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24">
           <div className="lg:col-span-5">
-            <Logo className="!text-paper !font-display !text-5xl md:!text-6xl !tracking-display mb-8" />
-            <div className="flex flex-col items-start translate-x-[-4px] mb-8">
-              <span className="font-['Great_Vibes'] text-[72px] md:text-[84px] text-gold/80 leading-[0.6] opacity-90">Eden</span>
-              <span className="text-[10px] md:text-[11px] uppercase tracking-[0.4em] text-paper/40 font-sans font-light mt-4 pl-1">
-                Retirement Living
-              </span>
-            </div>
+            <Logo variant="light" size="lg" className="mb-10" />
             <p className="max-w-md text-paper/60 font-sans text-sm md:text-base leading-relaxed tracking-tight">
               A unique state-of-the-art development for luxury later living, offering bespoke retirement lifestyles in the heart of Surrey.
             </p>
