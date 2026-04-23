@@ -51,9 +51,9 @@ export const Footer = () => {
     phone: settings?.phone || "",
     email: settings?.email || "",
     address: settings?.address || "",
-    instagram: settings?.instagram || "#",
-    facebook: settings?.facebook || "#",
-    linkedin: settings?.linkedin || "#"
+    instagram: settings?.instagram || "",
+    facebook: settings?.facebook || "",
+    linkedin: settings?.linkedin || ""
   };
 
   return (
@@ -160,15 +160,21 @@ export const Footer = () => {
               )}
             </div>
             <div className="flex items-center gap-4 pt-4">
-              <a href={contact.instagram} className="p-2 border border-paper/10 rounded-full hover:border-gold/50 hover:text-gold transition-all duration-300">
-                <Instagram className="h-4 w-4" />
-              </a>
-              <a href={contact.facebook} className="p-2 border border-paper/10 rounded-full hover:border-gold/50 hover:text-gold transition-all duration-300">
-                <Facebook className="h-4 w-4" />
-              </a>
-              <a href={contact.linkedin} className="p-2 border border-paper/10 rounded-full hover:border-gold/50 hover:text-gold transition-all duration-300">
-                <Linkedin className="h-4 w-4" />
-              </a>
+              {contact.instagram && (
+                <a href={contact.instagram} className="p-2 border border-paper/10 rounded-full hover:border-gold/50 hover:text-gold transition-all duration-300">
+                  <Instagram className="h-4 w-4" />
+                </a>
+              )}
+              {contact.facebook && (
+                <a href={contact.facebook} className="p-2 border border-paper/10 rounded-full hover:border-gold/50 hover:text-gold transition-all duration-300">
+                  <Facebook className="h-4 w-4" />
+                </a>
+              )}
+              {contact.linkedin && (
+                <a href={contact.linkedin} className="p-2 border border-paper/10 rounded-full hover:border-gold/50 hover:text-gold transition-all duration-300">
+                  <Linkedin className="h-4 w-4" />
+                </a>
+              )}
             </div>
           </div>
         </div>
