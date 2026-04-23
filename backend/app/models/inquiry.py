@@ -9,6 +9,7 @@ class InquiryModel(BaseModel):
     email: EmailStr
     telephone: Optional[str] = None
     postcode: Optional[str] = None
+    message: Optional[str] = None
     property: Optional[str] = None
     apartment: Optional[str] = None
     createdAt: datetime = Field(default_factory=datetime.utcnow)

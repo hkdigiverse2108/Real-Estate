@@ -246,6 +246,13 @@ function ContactPage() {
 
               <Field label="Postcode" name="postcode" placeholder="Post code" />
 
+              <Field 
+                label="Message" 
+                name="message" 
+                placeholder="How can we help you?" 
+                isTextArea 
+              />
+
               <button
                 type="submit"
                 className="inline-flex items-center justify-center px-8 py-3 text-paper text-[12px] tracking-display uppercase transition-colors duration-300 hover:opacity-90"
@@ -275,9 +282,10 @@ interface FieldProps {
   type?: string;
   placeholder?: string;
   required?: boolean;
+  isTextArea?: boolean;
 }
 
-function Field({ label, name, type = "text", placeholder, required }: FieldProps) {
+function Field({ label, name, type = "text", placeholder, required, isTextArea }: FieldProps) {
   return (
     <div>
       <label
@@ -286,14 +294,25 @@ function Field({ label, name, type = "text", placeholder, required }: FieldProps
       >
         {label}
       </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        placeholder={placeholder}
-        required={required}
-        className="w-full bg-paper border border-lake/30 px-4 py-3 text-ink placeholder:text-ink/40 focus:outline-none focus:border-lake focus:ring-1 focus:ring-lake/40 transition-colors"
-      />
+      {isTextArea ? (
+        <textarea
+          id={name}
+          name={name}
+          placeholder={placeholder}
+          required={required}
+          rows={4}
+          className="w-full bg-paper border border-lake/30 px-4 py-3 text-ink placeholder:text-ink/40 focus:outline-none focus:border-lake focus:ring-1 focus:ring-lake/40 transition-colors resize-none"
+        />
+      ) : (
+        <input
+          id={name}
+          name={name}
+          type={type}
+          placeholder={placeholder}
+          required={required}
+          className="w-full bg-paper border border-lake/30 px-4 py-3 text-ink placeholder:text-ink/40 focus:outline-none focus:border-lake focus:ring-1 focus:ring-lake/40 transition-colors"
+        />
+      )}
     </div>
   );
 }

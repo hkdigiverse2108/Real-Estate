@@ -245,8 +245,9 @@ function ApartmentDetailPage() {
               <Field label="Email" name="email" type="email" placeholder="Email" required />
               <Field label="Telephone" name="telephone" type="tel" placeholder="Telephone" />
               
-              <div className="md:col-span-2">
+              <div className="md:col-span-2 space-y-8">
                 <Field label="Postcode" name="postcode" placeholder="Post code" />
+                <Field label="Message" name="message" placeholder="Optional message" isTextArea />
               </div>
             </div>
             
@@ -279,20 +280,31 @@ function ApartmentDetailPage() {
   );
 }
 
-function Field({ label, name, type = "text", placeholder, required }: any) {
+function Field({ label, name, type = "text", placeholder, required, isTextArea }: any) {
   return (
     <div className="space-y-2.5">
       <label htmlFor={name} className="block text-[11px] font-bold tracking-[0.1em] uppercase text-ink/80">
         {label} {required && <span className="text-gold opacity-50">*</span>}
       </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        placeholder={placeholder}
-        required={required}
-        className="w-full bg-white border border-transparent border-b-ink/10 px-0 py-3 text-ink text-sm placeholder:text-ink/20 focus:outline-none focus:border-b-gold transition-all bg-transparent"
-      />
+      {isTextArea ? (
+        <textarea
+          id={name}
+          name={name}
+          placeholder={placeholder}
+          required={required}
+          rows={3}
+          className="w-full bg-white border border-transparent border-b-ink/10 px-0 py-3 text-ink text-sm placeholder:text-ink/20 focus:outline-none focus:border-b-gold transition-all bg-transparent resize-none"
+        />
+      ) : (
+        <input
+          id={name}
+          name={name}
+          type={type}
+          placeholder={placeholder}
+          required={required}
+          className="w-full bg-white border border-transparent border-b-ink/10 px-0 py-3 text-ink text-sm placeholder:text-ink/20 focus:outline-none focus:border-b-gold transition-all bg-transparent"
+        />
+      )}
     </div>
   );
 }

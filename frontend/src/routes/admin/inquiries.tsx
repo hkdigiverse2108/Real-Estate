@@ -115,6 +115,16 @@ function InquiriesPage() {
       ),
     },
     {
+      header: "Lead Message",
+      accessor: (item: any) => (
+        <div className="max-w-[200px]">
+          <div className="text-[11px] font-medium text-ink/60 italic leading-relaxed line-clamp-3">
+            {item.message || <span className="opacity-30">No message provided.</span>}
+          </div>
+        </div>
+      ),
+    },
+    {
       header: "Actions",
       className: "text-right",
       accessor: (item: any) => (
