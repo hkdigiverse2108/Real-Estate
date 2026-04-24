@@ -50,13 +50,16 @@ function PropertiesPage() {
       
       const method = editingProperty ? "PUT" : "POST";
       
+      // Remove database IDs from the body to avoid backend validation errors
+      const { id, _id, ...cleanData } = formData;
+      
       const res = await fetch(url, {
         method,
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(cleanData),
       });
 
       if (res.ok) {

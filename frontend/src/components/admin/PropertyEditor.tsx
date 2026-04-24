@@ -3,40 +3,40 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Plus, Trash2, Save, X, Image as ImageIcon, Loader2, Upload, ChevronDown, ChevronUp, MapPin, Layout, AlertCircle } from "lucide-react";
 import { AdminCard } from "./AdminCard";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { uploadAsset } from "@/lib/api";
 import { toast } from "sonner";
 
 const dimensionSchema = z.object({
-  room: z.string().nullable().optional().default(""),
-  metric: z.string().nullable().optional().default(""),
-  imperial: z.string().nullable().optional().default(""),
+  room: z.string().optional().default(""),
+  metric: z.string().optional().default(""),
+  imperial: z.string().optional().default(""),
 });
 
 const apartmentSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  type: z.string().nullable().optional().default("Apartment"),
-  size: z.string().nullable().optional().default(""),
-  price: z.string().nullable().optional().default("On request"),
-  slug: z.string().nullable().optional().default(""),
-  hero_image: z.string().nullable().optional().default(""),
-  floorplan_image: z.string().nullable().optional().default(""),
-  location_map_image: z.string().nullable().optional().default(""),
-  dimensions: z.array(dimensionSchema).nullable().optional().default([]),
+  type: z.string().optional().default("Apartment"),
+  size: z.string().optional().default(""),
+  price: z.string().optional().default("On request"),
+  slug: z.string().optional().default(""),
+  hero_image: z.string().optional().default(""),
+  floorplan_image: z.string().optional().default(""),
+  location_map_image: z.string().optional().default(""),
+  dimensions: z.array(dimensionSchema).optional().default([]),
 });
 
 const propertySchema = z.object({
   name: z.string().min(1, "Property name is required"),
-  hero: z.string().nullable().optional().default(""),
-  intro: z.string().nullable().optional().default(""),
-  showApartmentNote: z.string().nullable().optional().default(""),
-  hours: z.string().nullable().optional().default(""),
-  apartments: z.array(apartmentSchema).nullable().optional().default([]),
+  hero: z.string().optional().default(""),
+  intro: z.string().optional().default(""),
+  showApartmentNote: z.string().optional().default(""),
+  hours: z.string().optional().default(""),
+  apartments: z.array(apartmentSchema).optional().default([]),
   slug: z.string().min(1, "Property slug is required"),
-  tag: z.string().nullable().optional().default("For Sale"),
-  date: z.string().nullable().optional(),
-  featured_image: z.string().nullable().optional().default(""),
-  is_featured: z.boolean().nullable().optional().default(false),
+  tag: z.string().optional().default("For Sale"),
+  date: z.string().optional().default(""),
+  featured_image: z.string().optional().default(""),
+  is_featured: z.boolean().optional().default(false),
 });
 
 type PropertyFormValues = z.infer<typeof propertySchema>;
@@ -97,7 +97,11 @@ function DimensionsEditor({ nestIndex, control, register }: { nestIndex: number,
             <div className="flex items-end justify-end pb-1">
               <button
                 type="button"
-                onClick={() => remove(index)}
+                onClick={() => {
+                  if (confirm("Remove this dimension?")) {
+                    remove(index);
+                  }
+                }}
                 className="text-ink/20 hover:text-gold transition-colors"
               >
                 <Trash2 className="h-3.5 w-3.5" />
@@ -158,6 +162,17 @@ export function PropertyEditor({ initialData, onSave: initialOnSave, onCancel }:
       })),
     },
   });
+
+  const propertyName = watch("name");
+  useEffect(() => {
+    if (!initialData && propertyName) {
+      const generatedSlug = propertyName
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+      setValue("slug", generatedSlug);
+    }
+  }, [propertyName, setValue, initialData]);
 
   const onSave = (data: any) => {
     const validatedData = {
@@ -469,7 +484,9 @@ export function PropertyEditor({ initialData, onSave: initialOnSave, onCancel }:
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
-                            remove(index);
+                            if (confirm("Permanently remove this unit and all its data?")) {
+                              remove(index);
+                            }
                           }}
                           className="text-ink/20 hover:text-gold transition-colors"
                         >
