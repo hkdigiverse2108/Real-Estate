@@ -21,7 +21,7 @@ export const Route = createFileRoute("/lifestyle")({
 
 function LifestylePage() {
   return (
-    <main className="bg-paper text-ink selection:bg-gold/20">
+    <main className="bg-paper text-ink">
       <Header />
 
       {/* Hero Section */}
