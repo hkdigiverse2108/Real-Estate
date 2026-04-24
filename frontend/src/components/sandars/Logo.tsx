@@ -11,9 +11,9 @@ export const Logo = ({ className = "", variant = 'dark', size = 'md' }: LogoProp
   const [imgError, setImgError] = useState(false);
 
   const sizes = {
-    sm: { img: 'h-8', sandars: 'text-[12px]' },
-    md: { img: 'h-10 md:h-12', sandars: 'text-[16px] md:text-[20px]' },
-    lg: { img: 'h-24 md:h-28', sandars: 'text-[32px] md:text-[40px]' }
+    sm: { img: 'h-12', sandars: 'text-[12px]' },
+    md: { img: 'h-14 md:h-22', sandars: 'text-[18px] md:text-[24px]' },
+    lg: { img: 'h-56 md:h-80', sandars: 'text-[28px] md:text-[36px]' }
   };
 
   // Using /assets/ as it maps to the public directory in Vite
@@ -48,7 +48,7 @@ export const Logo = ({ className = "", variant = 'dark', size = 'md' }: LogoProp
               Eden
             </span>
             <span className={`uppercase tracking-[0.15em] font-sans font-medium mt-3 whitespace-nowrap ${
-              size === 'sm' ? 'text-[8px]' : size === 'md' ? 'text-[10px]' : 'text-[16px]'
+              size === 'sm' ? 'text-[10px]' : size === 'md' ? 'text-[14px]' : 'text-[24px]'
             } ${
               variant === 'dark' ? 'text-ink' : 'text-paper/60'
             }`}>
