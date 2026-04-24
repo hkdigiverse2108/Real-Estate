@@ -123,12 +123,12 @@ function ApartmentDetailPage() {
             <div className="space-y-16 lg:pt-8">
               {/* Mini Map */}
               {apartment.location_map_image && (
-                <div className="flex justify-center lg:justify-end pr-4">
-                  <div className="max-w-[180px] opacity-80">
+                <div className="flex justify-center mb-12">
+                  <div className="max-w-[320px] md:max-w-[400px] opacity-90 transition-opacity hover:opacity-100">
                     <img 
                       src={apartment.location_map_image} 
                       alt="Unit Location Key" 
-                      className="w-full h-auto"
+                      className="w-full h-auto shadow-sm"
                     />
                   </div>
                 </div>
