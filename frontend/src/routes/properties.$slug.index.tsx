@@ -75,10 +75,10 @@ function PropertyPage() {
                   <span key={i} className="block">{w}</span>
                 ))}
               </h1>
-              <p className="mt-8 text-[11px] md:text-xs tracking-display uppercase text-paper/90">
+              <p className="mt-8 text-[11px] md:text-xs tracking-display uppercase text-paper font-bold drop-shadow-md">
                 {property.showApartmentNote}
               </p>
-              <p className="mt-2 text-[11px] md:text-xs tracking-display uppercase text-paper/80">
+              <p className="mt-2 text-[11px] md:text-xs tracking-display uppercase text-paper/90 font-bold drop-shadow-md">
                 {property.hours}
               </p>
               <Link
