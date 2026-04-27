@@ -30,6 +30,7 @@ export const Hero = () => {
   const [i, setI] = useState(0);
   const [settings, setSettings] = useState<any>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   const getEmbedUrl = (url: string) => {
     if (!url) return "";
@@ -134,17 +135,32 @@ export const Hero = () => {
           {isPlaying && settings?.video_url && (
             <div className="absolute inset-0 z-30 bg-black animate-in fade-in duration-500">
               <iframe
+                onLoad={() => setTimeout(() => setIsVideoLoaded(true), 1200)}
                 src={getEmbedUrl(settings.video_url)}
-                className="w-full h-full border-0"
+                className={`w-full h-full border-0 transition-opacity duration-1000 ${isVideoLoaded ? 'opacity-100' : 'opacity-0'}`}
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowFullScreen
                 title="Property Film"
               />
+              
+              {!isVideoLoaded && (
+                <div className="absolute inset-0 z-32 flex items-center justify-center">
+                  <img src={SLIDES[i].image} className="absolute inset-0 w-full h-full object-cover brightness-50" alt="" />
+                  <div className="relative z-10 flex flex-col items-center gap-4">
+                    <div className="h-10 w-10 border-2 border-paper/20 border-t-gold rounded-full animate-spin" />
+                    <span className="text-paper/60 text-[10px] tracking-display uppercase">Preparing Film</span>
+                  </div>
+                </div>
+              )}
+
               {/* Transparent shield to prevent clicking on YouTube UI */}
               <div className="absolute inset-0 z-35 bg-transparent" />
               
               <button
-                onClick={() => setIsPlaying(false)}
+                onClick={() => {
+                  setIsPlaying(false);
+                  setIsVideoLoaded(false);
+                }}
                 className="absolute top-4 right-4 z-40 h-10 w-10 rounded-full bg-paper/20 backdrop-blur-md text-paper hover:bg-gold transition-colors flex items-center justify-center shadow-lg"
                 aria-label="Close video"
               >
