@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight, Play, X } from "lucide-react";
 import { fetchSettings } from "@/lib/api";
 import hero1 from "@/assets/hero-living.jpg";
 import hero2 from "@/assets/about-estate.jpg";
@@ -29,14 +29,35 @@ const SLIDES = [
 export const Hero = () => {
   const [i, setI] = useState(0);
   const [settings, setSettings] = useState<any>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const getEmbedUrl = (url: string) => {
+    if (!url) return "";
+    
+    // YouTube (handles watch?v= and youtu.be/)
+    const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&?/\s]+)/);
+    if (ytMatch) {
+      return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&rel=0&modestbranding=1&controls=0&iv_load_policy=3&showinfo=0&disablekb=1`;
+    }
+    
+    // Vimeo
+    const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+    if (vimeoMatch) {
+      return `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1`;
+    }
+    
+    return url;
+  };
 
   useEffect(() => {
-    const t = setInterval(() => setI((p) => (p + 1) % SLIDES.length), 6500);
-    
-    // Fetch interactive settings (like video URL)
-    fetchSettings().then(setSettings).catch(console.error);
+    if (!isPlaying) {
+      const t = setInterval(() => setI((p) => (p + 1) % SLIDES.length), 6500);
+      return () => clearInterval(t);
+    }
+  }, [isPlaying]);
 
-    return () => clearInterval(t);
+  useEffect(() => {
+    fetchSettings().then(setSettings).catch(console.error);
   }, []);
 
   const go = (n: number) => setI((p) => (p + n + SLIDES.length) % SLIDES.length);
@@ -99,17 +120,37 @@ export const Hero = () => {
           </button>
 
           {settings?.video_url && (
-            <a 
-              href={settings.video_url} 
-              target="_blank" 
-              rel="noopener noreferrer"
+            <button 
+              onClick={() => setIsPlaying(true)}
               className="absolute right-4 md:right-8 top-4 md:top-8 z-20 inline-flex items-center gap-2 text-paper/95 hover:text-paper text-sm tracking-display uppercase group"
             >
               <span className="grid place-items-center h-9 w-9 rounded-full bg-paper/20 backdrop-blur-sm border border-paper/40 group-hover:bg-gold transition-all duration-300">
                 <Play className="h-3.5 w-3.5 fill-paper" />
               </span>
               Watch the film
-            </a>
+            </button>
+          )}
+
+          {isPlaying && settings?.video_url && (
+            <div className="absolute inset-0 z-30 bg-black animate-in fade-in duration-500">
+              <iframe
+                src={getEmbedUrl(settings.video_url)}
+                className="w-full h-full border-0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                title="Property Film"
+              />
+              {/* Transparent shield to prevent clicking on YouTube UI */}
+              <div className="absolute inset-0 z-35 bg-transparent" />
+              
+              <button
+                onClick={() => setIsPlaying(false)}
+                className="absolute top-4 right-4 z-40 h-10 w-10 rounded-full bg-paper/20 backdrop-blur-md text-paper hover:bg-gold transition-colors flex items-center justify-center shadow-lg"
+                aria-label="Close video"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
           )}
 
           <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex gap-2">
