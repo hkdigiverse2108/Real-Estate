@@ -173,53 +173,6 @@ function ApartmentDetailPage() {
         </div>
       </section>
 
-      {/* Location Section */}
-      <section className="py-20 md:py-32 bg-paper-soft overflow-hidden border-t border-ink/5">
-        <div className="container-luxe mb-16">
-          <div className="text-center">
-            <h2 className="font-display text-[44px] md:text-[56px] uppercase tracking-[0.2em] mb-6 text-ink/80">
-              Location
-            </h2>
-            <p className="text-[13px] md:text-[14px] font-medium text-ink/60 max-w-2xl mx-auto tracking-tight uppercase">
-              Discover the perfect balance of serenity and connectivity in the heart of Surrey
-            </p>
-          </div>
-        </div>
-        
-        <div className="relative w-full h-[450px] md:h-[600px] bg-ink/5 group cursor-pointer">
-          {/* Clickable Overlay */}
-          <a 
-            href="https://maps.app.goo.gl/vZpbzjuWmdsk9yQG6" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="absolute inset-0 z-10 block"
-            aria-label="View on Google Maps"
-          >
-            <div className="absolute top-8 left-1/2 -translate-x-1/2 z-20 bg-white/95 backdrop-blur-md px-8 py-3 rounded-full border border-ink/5 text-[11px] uppercase tracking-[0.2em] font-bold text-ink opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0 shadow-2xl scale-95 group-hover:scale-100">
-              View on Google Maps
-            </div>
-          </a>
-
-          <iframe
-            title="Location Map"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19909.12130396001!2d-0.5208182!3d51.4096667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487677cee2ffa2ad%3A0xdbc5af55e8767878!2sEden%20Retirement%20Living!5e0!3m2!1sen!2sin!4v1713763784123!5m2!1sen!2sin"
-            className="absolute inset-0 w-full h-full border-0 grayscale group-hover:grayscale-0 transition-shadow duration-1000 ease-in-out"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
-          
-          {/* Location Label - Refined */}
-          <div className="absolute bottom-8 left-8 z-20 pointer-events-none">
-            <div className="bg-white/80 backdrop-blur-xl px-6 py-3 border border-ink/5 shadow-2xl flex items-center gap-4">
-              <div className="w-1 h-8 bg-gold/40" />
-              <div className="flex flex-col">
-                <span className="text-[12px] font-bold uppercase tracking-[0.3em] text-ink">Eden Retirement Living</span>
-                <span className="text-[8px] uppercase tracking-[0.1em] text-ink/40">Cemex House, Egham TW20 8TD</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Inquiry Form Section - Light Beige Background */}
       <section className="py-24 md:py-36 bg-stone/30">
