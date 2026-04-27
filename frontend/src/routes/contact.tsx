@@ -99,55 +99,58 @@ function ContactPage() {
         </div>
       </section>
 
-      {/* Contact us */}
-      <section className="bg-paper-soft py-16 md:py-24">
-        <div className="container-luxe grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-          <div className="aspect-[4/3] overflow-hidden bg-ink/5">
-            <img
-              src={contactImg}
-              alt="A warm conversation at The Sandars"
-              className="h-full w-full object-cover"
-              width={1024}
-              height={768}
-              loading="lazy"
-            />
-          </div>
+      {/* Get in touch form - Moved here from bottom */}
+      <section className="py-20 md:py-28" style={{ backgroundColor: "var(--stone)" }}>
+        <div className="container-luxe">
 
-          <div>
-            <h2 className="font-display text-3xl md:text-4xl uppercase tracking-tight text-ink/80 mb-10">
-              Contact us
-            </h2>
-
-            <div className="mt-8 space-y-3 text-ink/85 min-h-[100px]">
-              {loading ? (
-                <div className="flex items-center gap-3 text-ink/30 italic text-sm">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Optimizing contact details...
-                </div>
-              ) : (
-                <>
-                  {contact.phone && contact.phone.trim() !== "" && (
-                    <p>
-                      <span className="font-medium">Phone:</span>{" "}
-                      <a href={`tel:${contact.phone.replace(/\s+/g, '')}`} className="hover:text-gold transition-colors">
-                        {contact.phone}
-                      </a>
-                    </p>
-                  )}
-                  {contact.email && contact.email.trim() !== "" && (
-                    <p>
-                      <span className="font-medium">Email:</span>{" "}
-                      <a
-                        href={`mailto:${contact.email}`}
-                        className="text-ink/70 underline underline-offset-2 hover:text-gold transition-colors"
-                      >
-                        {contact.email}
-                      </a>
-                    </p>
-                  )}
-                </>
-              )}
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+            <div className="aspect-[4/3] overflow-hidden bg-ink/5">
+              <img
+                src={teaImg}
+                alt="A peaceful moment at The Sandars"
+                className="h-full w-full object-cover"
+                width={1024}
+                height={768}
+                loading="lazy"
+              />
             </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <Field label="Title" name="title" placeholder="Title" />
+
+              <div className="grid sm:grid-cols-2 gap-6">
+                <Field label="First Name" name="firstName" placeholder="First Name" />
+                <Field label="Surname" name="surname" placeholder="Surname" />
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-6">
+                <Field label="Email" name="email" type="email" placeholder="Email" required />
+                <Field label="Telephone" name="telephone" type="tel" placeholder="Telephone" />
+              </div>
+
+              <Field label="Postcode" name="postcode" placeholder="Post code" />
+
+              <Field 
+                label="Message" 
+                name="message" 
+                placeholder="Your enquiry or specific requirements..." 
+                isTextArea 
+              />
+
+              <button
+                type="submit"
+                className="inline-flex items-center justify-center px-8 py-3 text-paper text-[12px] tracking-display uppercase transition-colors duration-300 hover:bg-forest"
+                style={{ backgroundColor: "var(--gold)" }}
+              >
+                Submit
+              </button>
+
+              {submitted && (
+                <p className="text-sm text-gold mt-2" role="status">
+                  Thank you — we will be in touch shortly.
+                </p>
+              )}
+            </form>
           </div>
         </div>
       </section>
@@ -212,64 +215,6 @@ function ContactPage() {
         </div>
       </section>
 
-      {/* Get in touch */}
-      <section className="py-20 md:py-28" style={{ backgroundColor: "var(--stone)" }}>
-        <div className="container-luxe">
-          <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tight text-center text-ink/85 mb-14 md:mb-16">
-            Get in touch
-          </h2>
-
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-            <div className="aspect-[4/3] overflow-hidden bg-ink/5">
-              <img
-                src={teaImg}
-                alt="A peaceful moment at The Sandars"
-                className="h-full w-full object-cover"
-                width={1024}
-                height={768}
-                loading="lazy"
-              />
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <Field label="Title" name="title" placeholder="Title" />
-
-              <div className="grid sm:grid-cols-2 gap-6">
-                <Field label="First Name" name="firstName" placeholder="First Name" />
-                <Field label="Surname" name="surname" placeholder="Surname" />
-              </div>
-
-              <div className="grid sm:grid-cols-2 gap-6">
-                <Field label="Email" name="email" type="email" placeholder="Email" required />
-                <Field label="Telephone" name="telephone" type="tel" placeholder="Telephone" />
-              </div>
-
-              <Field label="Postcode" name="postcode" placeholder="Post code" />
-
-              <Field 
-                label="Message" 
-                name="message" 
-                placeholder="Your enquiry or specific requirements..." 
-                isTextArea 
-              />
-
-              <button
-                type="submit"
-                className="inline-flex items-center justify-center px-8 py-3 text-paper text-[12px] tracking-display uppercase transition-colors duration-300 hover:bg-forest"
-                style={{ backgroundColor: "var(--gold)" }}
-              >
-                Submit
-              </button>
-
-              {submitted && (
-                <p className="text-sm text-gold mt-2" role="status">
-                  Thank you — we will be in touch shortly.
-                </p>
-              )}
-            </form>
-          </div>
-        </div>
-      </section>
 
       <Footer />
     </main>
